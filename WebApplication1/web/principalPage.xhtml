@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    
+    <h:head>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"></link>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"></link>
+        <h:outputStylesheet name="css/principalPage.css"/>
+        <title>Encontre Pontos Turisticos</title>
+    </h:head>
+    <h:body>
+        
+     <nav id="navBar" class="navbar navbar-expand-lg navbar-red bg-red">
+        <div id="divTitulo" class="container-fluid">
+            <a id="titulo" class="navbar-brand" href="#">Pontos Turísticos</a>
+        </div>
+        <div class="container-fluid">
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-mdb-toggle="collapse"
+          data-mdb-target="#navbarCenteredExample"
+          aria-controls="navbarCenteredExample"
+          aria-expanded="false"
+          aria-label="Toggle navigation">
+          <i class="fas fa-bars"></i>
+        </button>
+        <div
+          class="collapse navbar-collapse justify-content-center"
+          id="navbarCenteredExample">
+          <!-- Left links -->
+          <ul  class="navbar-nav mb-2 mb-lg-0">
+            <li  class="nav-item">
+              <a id="corItens" class="nav-link active" aria-current="page" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+              <a id="corItens" class="nav-link" href="#">O que fazer</a>
+            </li>   
+           <li class="nav-item">
+              <a id="corItens" class="nav-link" href="#">Link</a>
+            </li>   
+          </ul>
+        </div>
+      </div>
+    </nav>
+        <div id="pesquisar" class="input-group">
+        <input value="#{hotelManagedBean.hotel.nome}"  id="barra-pesquisar" type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+        <button type="button" class="btn btn-outline-primary">search</button>
+    </div>
+
+       
+       
+        <b:container></b:container>
+        <b:panel styleClass="card" title="Marco Zero" collapsible="false">
+               <h:outputText styleClass="font-card-endreco" value=" Av. Alfredo Lisboa, s/n - Recife, PE, 50030-150"></h:outputText>
+               <b:container></b:container>
+                 <h:outputText styleClass="font-card-subtitle" value="Nome Popular: Recife Antigo"></h:outputText>
+                 <b:container></b:container>
+                 <i class="pi pi-check" style="font-size: 2rem"></i>
+                 <h:outputText styleClass="font-card-subtitle" value="Bairro do Recife"></h:outputText>
+                 <h:outputText styleClass="font-card-subtitle" value="         Recife"></h:outputText>
+        </b:panel>
+     <b:container></b:container>
+       <b:panel styleClass="card" title="Marco Zero" collapsible="false">
+               <h:outputText styleClass="font-card-endreco" value=" Av. Alfredo Lisboa, s/n - Recife, PE, 50030-150"></h:outputText>
+               <b:container></b:container>
+                 <h:outputText styleClass="font-card-subtitle" value="Nome Popular: Recife Antigo"></h:outputText>
+                 <b:container></b:container>
+                 <h:outputText styleClass="font-card-subtitle" value="Bairro do Recife"></h:outputText>
+                 <h:outputText styleClass="font-card-subtitle" value="         Recife"></h:outputText>
+        </b:panel>
+    <b:container></b:container>
+        <b:panel styleClass="card" title="Marco Zero" collapsible="false">
+               <h:outputText styleClass="font-card-endreco" value=" Av. Alfredo Lisboa, s/n - Recife, PE, 50030-150"></h:outputText>
+               <b:container></b:container>
+                 <h:outputText styleClass="font-card-subtitle" value="Nome Popular: Recife Antigo"></h:outputText>
+                 <b:container></b:container>
+                 <h:outputText styleClass="font-card-subtitle" value="Bairro do Recife"></h:outputText>
+                 <h:outputText styleClass="font-card-subtitle" value="         Recife"></h:outputText>
+        </b:panel>
+        
+    </h:body>
+</html>
+

@@ -1,0 +1,100 @@
+
+#navBar{
+    background: #ED5D5D;
+    font-size: 50px;
+    color: white;
+    height: 150px;
+    
+}
+
+
+
+.divTitulo{
+    left: 20px;
+    margin-left: 20px;
+    font-size: 50px;
+    color: white;
+    margin-bottom: 20px;
+    
+}
+
+#titulo{
+    font-size: 50px;
+    color: white;
+    
+}
+
+#corItens{
+    color: white;
+    font-size: 20px;
+}
+
+#pesquisar{
+    margin-left: 385px;
+    margin-top: 20px;
+    width: 200em;
+    border-radius: 16px;
+  
+    
+}
+
+#barra-pesquisar{
+    height: 30px;
+    width: 300px;
+}
+
+.card{
+    margin-left: 50px;
+    width: 300px;
+    border-radius: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 16px;
+    right: 0%;
+    bottom: 0%;
+    background: #FFFFFF;
+    font-family: "Poppins";
+   
+
+
+}
+
+#font-card-title{
+    font-family: "Poppins";
+    text-align: center;
+    
+}
+
+.font-card-subtitle{
+    font-size: 12px;
+}
+
+.font-card-endreco{
+    font-size: 18px;
+}
+
+
+#icon-location{
+    margin-right: 5px;
+    color: #ED5D5D;
+}
+
+
+#bairro{
+    color: black;
+    text-decoration: none;
+}
+
+
+@media screen and (max-width: 2000px) {
+    
+    #pesquisar{
+    margin-left: 200px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 100em;
+    border-radius: 16px;
+  
+    
+}
+}
