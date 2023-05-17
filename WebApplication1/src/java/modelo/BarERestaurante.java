@@ -11,6 +11,7 @@ package modelo;
  */
 public class BarERestaurante extends touristSpot {
     
+    //TO DO - Adicionar no construtor ele receber um double latitude um double longitude
     private String endereco;
     private String telefone;
     private String especialidade;

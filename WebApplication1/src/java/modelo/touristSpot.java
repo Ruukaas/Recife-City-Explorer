@@ -10,7 +10,7 @@ package modelo;
  * @author euluc
  */
 public abstract class touristSpot {
-    
+    //TO DO - Quando o método de converter endereço em lat/long estiver pronto, colocar o lat e long aqui
         protected int _id;
         protected String nome;
         

@@ -32,6 +32,7 @@ public class acessoPontosTuristicos {
     
     //TO DO - A comparação != null ta servindo de nada, trocar ela
     //Usar o mesmo mecanismo da conversão de endereço para latitude e longitude para descobrir a latitude e longitude dos baresERestaurantes ou apagar eles da lista
+    //Testar em todos os "gets" se a latitude ou longitude ta retornando nulo
     String currentAPIURL;
     URL url;
     HttpURLConnection conn;
@@ -85,6 +86,13 @@ public class acessoPontosTuristicos {
         JSONArray currentJSONArray = null;
         currentJSONArray = currentJSON.getJSONArray(key);
         return currentJSONArray;
+    }
+    
+    //Usado no getBaresERestaurantes
+    public Double[] getLatELongBaseadoNoEndereco(String endereco) {
+        Double[] currentLatLong = new Double[2];
+         //Atribuir retorno da chamada da função do que converte o endereço em lat e long no currentLatLong
+        return currentLatLong;
     }
 
     public List<Museu> getMuseus() throws JSONException {
@@ -366,6 +374,8 @@ public class acessoPontosTuristicos {
                 String especialidade = currentBarERestaurante.getString("especialidade");
                 String site = currentBarERestaurante.getString("site");
                 String email = currentBarERestaurante.getString("email");
+                
+                //Chamar a função getLatELongBaseadoNoEndereco passando o endereco como parâmetro e criar dois doubles latitude e longitude e passar eles na chamada do construtor
 
                 BarERestaurante barERestaurante = new BarERestaurante(_id, nome, endereco, telefone, especialidade, site, email);
 
