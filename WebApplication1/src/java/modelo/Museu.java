@@ -9,7 +9,7 @@ package modelo;
  *
  * @author euluc
  */
-public class Museu extends touristSpot{
+public class Museu extends touristSpot {
     
     private String descricao;
     private String bairro;
