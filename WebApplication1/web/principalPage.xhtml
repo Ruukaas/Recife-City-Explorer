@@ -6,8 +6,9 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
-    <h:head>
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      >
+    <h:head >
 
         <meta charset="UTF-8"/>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"></link>
@@ -17,7 +18,6 @@
 
     </h:head>
     <h:body>
-
         <b:modal id="modalView" style-class="modalView"
                  title="'Visualização de Desmanx " size="500">
 
@@ -73,49 +73,49 @@
             </nav>
             <div id="pesquisar" class="input-group">
                 <h:inputText id="barra-pesquisar" styleClass="form-control rounded" value="#{acessoAPIGeocoding.currentSearch}"/>
-                <h:commandButton type="submit" styleClass="btn btn-outline-primary" value="search" action="#{acessoAPIGeocoding.atualizarAtracoesProximas()}" />
+                <h:commandButton type="submit" styleClass="btn btn-outline-primary" value="search" action="#{acessoAPIGeocoding.atualizarAtracoesProximas()}"></h:commandButton>
             </div>
         </h:form>
 
         <h:form>
-
+<!--
             <h:selectBooleanCheckbox value="${pontosTuristicos.isBarERestauranteFiltered}">
-                <f:ajax render="baresERestaurantes" />
+                <f:ajax render="atracoes" />
             </h:selectBooleanCheckbox>
-            <h:outputLabel for="isBarERestauranteFiltered">Bares e Restaurantes</h:outputLabel>
+            <h:outputLabel for="isBarERestauranteFiltered">Bares e Restaurantes</h:outputLabel>-->
 
             <h:selectBooleanCheckbox value="${pontosTuristicos.isCentroDeComprasFiltered}">
-                <f:ajax render="centrosDeCompras" />
+                <f:ajax render="atracoes" />
             </h:selectBooleanCheckbox>
             <h:outputLabel for="isCentroDeComprasFiltered">Centros de Compras</h:outputLabel>
 
-                        <!--            <h:selectBooleanCheckbox value="${pontosTuristicos.isFeiraLiveFiltered}">
-                            <f:ajax render="atracoes" />
-                        </h:selectBooleanCheckbox>
-                        <h:outputLabel for="isFeiraLivreFiltered">Feiras Livres</h:outputLabel>-->
+<!--            <h:selectBooleanCheckbox value="${pontosTuristicos.isFeiraLiveFiltered}">
+                <f:ajax render="atracoes" />
+            </h:selectBooleanCheckbox>
+            <h:outputLabel for="isFeiraLivreFiltered">Feiras Livres</h:outputLabel>-->
 
             <h:selectBooleanCheckbox value="${pontosTuristicos.isHotelFiltered}">
-                <f:ajax render="hoteis" />
+                <f:ajax render="atracoes" />
             </h:selectBooleanCheckbox>
             <h:outputLabel for="isHotelFiltered">Hotéis</h:outputLabel>
 
             <h:selectBooleanCheckbox value="${pontosTuristicos.isMercadoPublicoFiltered}">
-                <f:ajax render="mercadosPublicos" />
+                <f:ajax render="atracoes" />
             </h:selectBooleanCheckbox>
             <h:outputLabel for="isMercadoPublicoFiltered">Mercados Publicos</h:outputLabel>
 
             <h:selectBooleanCheckbox value="${pontosTuristicos.isMuseuFiltered}">
-                <f:ajax render="museus" />
+                <f:ajax render="atracoes" />
             </h:selectBooleanCheckbox>
             <h:outputLabel for="isMuseuFiltered">Museus</h:outputLabel>
 
             <h:selectBooleanCheckbox value="${pontosTuristicos.isPonteFiltered}">
-                <f:ajax render="pontes" />
+                <f:ajax render="atracoes" />
             </h:selectBooleanCheckbox>
             <h:outputLabel for="isPonteFiltered">Pontes</h:outputLabel>
 
             <h:selectBooleanCheckbox value="${pontosTuristicos.isTeatroFiltered}">
-                <f:ajax render="teatros" />
+                <f:ajax render="atracoes" />
             </h:selectBooleanCheckbox>
             <h:outputLabel for="isTeatroFiltered">Teatros</h:outputLabel>
 
@@ -125,162 +125,189 @@
 
             <h:panelGroup id="atracoes">
 
-                <h:panelGroup id = "baresERestaurantes">
-                    <ui:repeat value="${pontosTuristicos.baresERestaurantes}" var="item" rendered="#{pontosTuristicos.isBarERestauranteFiltered}">
+                <ui:repeat value="${pontosTuristicos.allPontosTuristicos}" var="item">
 
-                        <h:form>
-                            <b:container></b:container>
-                            <b:panel styleClass="card" title="#{item.nome}" collapsible="false">
-                                <h:outputText value="#{item.tipoDeAtracao}"></h:outputText>
-                                <!--<f:ajax></f:ajax>--> 
-                                <p:commandButton value="Visualizar" actionListener="#{pontosTuristicos.updateSelectedTouristSpot(item.id, item.tipoDeAtracao)}" oncomplete="$('#modalView').modal('show')"
-                                                 update=":modalView" ajax="true" 
-                                                 >
-                                </p:commandButton>
-                            </b:panel>
-                            <b:container></b:container>
-                        </h:form>
-
-                    </ui:repeat> 
-
-                </h:panelGroup>
-
-                <h:panelGroup id="centrosDeCompras">
-                    <ui:repeat value="${pontosTuristicos.centrosDeCompras}" var="item" rendered="#{pontosTuristicos.isCentroDeComprasFiltered}">
-
-                        <h:form>
-                            <b:container></b:container>
-                            <b:panel styleClass="card" title="#{item.nome}" collapsible="false">
-                                <h:outputText value="#{item.tipoDeAtracao}"></h:outputText>
-                                <!--<f:ajax></f:ajax>--> 
-                                <p:commandButton value="Visualizar" oncomplete="$('#modalView').modal('show')"
-                                                 update=":modalView" ajax="true" actionListener="#{pontosTuristicos.updateSelectedTouristSpot(item.id, item.tipoDeAtracao)}"
-                                                 >
-                                </p:commandButton>
-                            </b:panel>
-                            <b:container></b:container>
-                        </h:form>
-
-                    </ui:repeat> 
-
-                </h:panelGroup>
-
-                <!--                <h:panelGroup id="feirasLivres">
-                
-                               <ui:repeat value="feiraLivre" var="item" rendered="#{pontosTuristicos.isFeiraLiveFiltered}">
-                
-                    <h:form>
+                    <h:form rendered="#{item.tipoDeAtracao.equals('Bar E Restaurante') ? pontosTuristicos.isBarERestauranteFiltered :
+                                        item.tipoDeAtracao.equals('Centro De Compras') ? pontosTuristicos.isCentroDeComprasFiltered :
+                                        item.tipoDeAtracao.equals('Feira Livre') ? pontosTuristicos.isFeiraLiveFiltered :
+                                        item.tipoDeAtracao.equals('Hotel') ? pontosTuristicos.isHotelFiltered :
+                                        item.tipoDeAtracao.equals('Mercado Publico') ? pontosTuristicos.isMercadoPublicoFiltered :
+                                        item.tipoDeAtracao.equals('Museu') ? pontosTuristicos.isMuseuFiltered :
+                                        item.tipoDeAtracao.equals('Ponte') ? pontosTuristicos.isPonteFiltered :
+                                        item.tipoDeAtracao.equals('Teatro') ? pontosTuristicos.isTeatroFiltered : false}">
                         <b:container></b:container>
-                        <b:panel styleClass="card" title="#{item.nome}" collapsible="false">
+                        <b:panel styleClass="card" title="#{item.nome}" collapsible="false" 
+
+
+                                 >
                             <h:outputText value="#{item.tipoDeAtracao}"></h:outputText>
                             <f:ajax></f:ajax> 
-                            <p:commandButton value="Visualizar" oncomplete="$('#modalView').modal('show')"
-                                             update=":modalView" ajax="true" actionListener="#{pontosTuristicos.updateSelectedTouristSpot(item.id, item.tipoDeAtracao)}"
+                            <p:commandButton value="Visualizar" actionListener="#{pontosTuristicos.updateSelectedTouristSpot(item.id, item.tipoDeAtracao)}" oncomplete="$('#modalView').modal('show')"
+                                             update=":modalView" ajax="true" 
                                              >
                             </p:commandButton>
                         </b:panel>
                         <b:container></b:container>
                     </h:form>
-                
+
                 </ui:repeat> 
+                <!--
+                                <h:panelGroup id = "baresERestaurantes">
+                                    <ui:repeat value="${pontosTuristicos.baresERestaurantes}" var="item" rendered="#{pontosTuristicos.isBarERestauranteFiltered}" >
+                
+                                        <h:form>
+                                            <b:container></b:container>
+                                            <b:panel styleClass="card" title="#{item.nome}" collapsible="false">
+                                                <h:outputText value="#{item.tipoDeAtracao}"></h:outputText>
+                                                <f:ajax></f:ajax> 
+                                                <p:commandButton value="Visualizar" actionListener="#{pontosTuristicos.updateSelectedTouristSpot(item.id, item.tipoDeAtracao)}" oncomplete="$('#modalView').modal('show')"
+                                                                 update=":modalView" ajax="true" 
+                                                                 >
+                                                </p:commandButton>
+                                            </b:panel>
+                                            <b:container></b:container>
+                                        </h:form>
+                
+                                    </ui:repeat> 
+                
+                                </h:panelGroup>
+                
+                                <h:panelGroup id="centrosDeCompras">
+                                    <ui:repeat value="${pontosTuristicos.centrosDeCompras}" var="item" rendered="#{pontosTuristicos.isCentroDeComprasFiltered}">
+                
+                                        <h:form>
+                                            <b:container></b:container>
+                                            <b:panel styleClass="card" title="#{item.nome}" collapsible="false">
+                                                <h:outputText value="#{item.tipoDeAtracao}"></h:outputText>
+                                                <f:ajax></f:ajax> 
+                                                <p:commandButton value="Visualizar" oncomplete="$('#modalView').modal('show')"
+                                                                 update=":modalView" ajax="true" actionListener="#{pontosTuristicos.updateSelectedTouristSpot(item.id, item.tipoDeAtracao)}"
+                                                                 >
+                                                </p:commandButton>
+                                            </b:panel>
+                                            <b:container></b:container>
+                                        </h:form>
+                
+                                    </ui:repeat> 
+                
+                                </h:panelGroup>
+                
+                                                <h:panelGroup id="feirasLivres">
+                                
+                                               <ui:repeat value="feiraLivre" var="item" rendered="#{pontosTuristicos.isFeiraLiveFiltered}">
+                                
+                                    <h:form>
+                                        <b:container></b:container>
+                                        <b:panel styleClass="card" title="#{item.nome}" collapsible="false">
+                                            <h:outputText value="#{item.tipoDeAtracao}"></h:outputText>
+                                            <f:ajax></f:ajax> 
+                                            <p:commandButton value="Visualizar" oncomplete="$('#modalView').modal('show')"
+                                                             update=":modalView" ajax="true" actionListener="#{pontosTuristicos.updateSelectedTouristSpot(item.id, item.tipoDeAtracao)}"
+                                                             >
+                                            </p:commandButton>
+                                        </b:panel>
+                                        <b:container></b:container>
+                                    </h:form>
+                                
+                                </ui:repeat> 
+                                                </h:panelGroup>
+                
+                                <h:panelGroup id="hoteis">
+                                    <ui:repeat value="${pontosTuristicos.hoteis}" var="item" rendered="#{pontosTuristicos.isHotelFiltered}">
+                
+                                        <h:form>
+                                            <b:container></b:container>
+                                            <b:panel styleClass="card" title="#{item.nome}" collapsible="false">
+                                                <h:outputText value="#{item.tipoDeAtracao}"></h:outputText>
+                                                <f:ajax></f:ajax> 
+                                                <p:commandButton value="Visualizar" oncomplete="$('#modalView').modal('show')"
+                                                                 update=":modalView" ajax="true" actionListener="#{pontosTuristicos.updateSelectedTouristSpot(item.id, item.tipoDeAtracao)}"
+                                                                 >
+                                                </p:commandButton>
+                                            </b:panel>
+                                            <b:container></b:container>
+                                        </h:form>
+                
+                                    </ui:repeat> 
+                                </h:panelGroup>
+                
+                                <h:panelGroup id="mercadosPublicos">
+                                    <ui:repeat value="${pontosTuristicos.mercadosPublicos}" var="item" rendered="#{pontosTuristicos.isMercadoPublicoFiltered}">
+                
+                                        <h:form>
+                                            <b:container></b:container>
+                                            <b:panel styleClass="card" title="#{item.nome}" collapsible="false">
+                                                <h:outputText value="#{item.tipoDeAtracao}"></h:outputText>
+                                                <f:ajax></f:ajax> 
+                                                <p:commandButton value="Visualizar" oncomplete="$('#modalView').modal('show')"
+                                                                 update=":modalView" ajax="true" actionListener="#{pontosTuristicos.updateSelectedTouristSpot(item.id, item.tipoDeAtracao)}"
+                                                                 >
+                                                </p:commandButton>
+                                            </b:panel>
+                                            <b:container></b:container>
+                                        </h:form>
+                
+                                    </ui:repeat>
+                
+                                </h:panelGroup>
+                
+                                <h:panelGroup id="museus">
+                
+                                    <ui:repeat value="${pontosTuristicos.museus}" var="item" rendered="#{pontosTuristicos.isMuseuFiltered}">
+                
+                                        <h:form>
+                                            <b:container></b:container>
+                                            <b:panel styleClass="card" title="#{item.nome}" collapsible="false">
+                                                <h:outputText value="#{item.tipoDeAtracao}"></h:outputText>
+                                                <f:ajax></f:ajax> 
+                                                <p:commandButton value="Visualizar" oncomplete="$('#modalView').modal('show')"
+                                                                 update=":modalView" ajax="true" actionListener="#{pontosTuristicos.updateSelectedTouristSpot(item.id, item.tipoDeAtracao)}"
+                                                                 >
+                                                </p:commandButton>
+                                            </b:panel>
+                                            <b:container></b:container>
+                                        </h:form>
+                
+                                    </ui:repeat> 
+                
+                                </h:panelGroup>
+                                <h:panelGroup id="pontes">
+                                    <ui:repeat value="${pontosTuristicos.pontes}" var="item" rendered="#{pontosTuristicos.isPonteFiltered}">
+                
+                                        <h:form>
+                                            <b:container></b:container>
+                                            <b:panel styleClass="card" title="#{item.nome}" collapsible="false">
+                                                <h:outputText value="#{item.tipoDeAtracao}"></h:outputText>
+                                                <f:ajax></f:ajax> 
+                                                <p:commandButton value="Visualizar" oncomplete="$('#modalView').modal('show')"
+                                                                 update=":modalView" ajax="true" actionListener="#{pontosTuristicos.updateSelectedTouristSpot(item.id, item.tipoDeAtracao)}"
+                                                                 >
+                                                </p:commandButton>
+                                            </b:panel>
+                                            <b:container></b:container>
+                                        </h:form>
+                
+                                    </ui:repeat> 
+                                </h:panelGroup>
+                
+                                <h:panelGroup id="teatros">
+                                    <ui:repeat value="${pontosTuristicos.teatros}" var="item" rendered="#{pontosTuristicos.isTeatroFiltered}">
+                
+                                        <h:form>
+                                            <b:container></b:container>
+                                            <b:panel styleClass="card" title="#{item.nome}" collapsible="false">
+                                                <h:outputText value="#{item.tipoDeAtracao}"></h:outputText>
+                                                <f:ajax></f:ajax> 
+                                                <p:commandButton value="Visualizar" oncomplete="$('#modalView').modal('show')"
+                                                                 update=":modalView" ajax="true" actionListener="#{pontosTuristicos.updateSelectedTouristSpot(item.id, item.tipoDeAtracao)}"
+                                                                 >
+                                                </p:commandButton>
+                                            </b:panel>
+                                            <b:container></b:container>
+                                        </h:form>
+                
+                                    </ui:repeat> 
                                 </h:panelGroup>-->
-
-                <h:panelGroup id="hoteis">
-                    <ui:repeat value="${pontosTuristicos.hoteis}" var="item" rendered="#{pontosTuristicos.isHotelFiltered}">
-
-                        <h:form>
-                            <b:container></b:container>
-                            <b:panel styleClass="card" title="#{item.nome}" collapsible="false">
-                                <h:outputText value="#{item.tipoDeAtracao}"></h:outputText>
-                                <!--<f:ajax></f:ajax>--> 
-                                <p:commandButton value="Visualizar" oncomplete="$('#modalView').modal('show')"
-                                                 update=":modalView" ajax="true" actionListener="#{pontosTuristicos.updateSelectedTouristSpot(item.id, item.tipoDeAtracao)}"
-                                                 >
-                                </p:commandButton>
-                            </b:panel>
-                            <b:container></b:container>
-                        </h:form>
-
-                    </ui:repeat> 
-                </h:panelGroup>
-
-                <h:panelGroup id="mercadosPublicos">
-                    <ui:repeat value="${pontosTuristicos.mercadosPublicos}" var="item" rendered="#{pontosTuristicos.isMercadoPublicoFiltered}">
-
-                        <h:form>
-                            <b:container></b:container>
-                            <b:panel styleClass="card" title="#{item.nome}" collapsible="false">
-                                <h:outputText value="#{item.tipoDeAtracao}"></h:outputText>
-                                <!--<f:ajax></f:ajax>--> 
-                                <p:commandButton value="Visualizar" oncomplete="$('#modalView').modal('show')"
-                                                 update=":modalView" ajax="true" actionListener="#{pontosTuristicos.updateSelectedTouristSpot(item.id, item.tipoDeAtracao)}"
-                                                 >
-                                </p:commandButton>
-                            </b:panel>
-                            <b:container></b:container>
-                        </h:form>
-
-                    </ui:repeat>
-
-                </h:panelGroup>
-
-                <h:panelGroup id="museus">
-
-                    <ui:repeat value="${pontosTuristicos.museus}" var="item" rendered="#{pontosTuristicos.isMuseuFiltered}">
-
-                        <h:form>
-                            <b:container></b:container>
-                            <b:panel styleClass="card" title="#{item.nome}" collapsible="false">
-                                <h:outputText value="#{item.tipoDeAtracao}"></h:outputText>
-                                <!--<f:ajax></f:ajax>--> 
-                                <p:commandButton value="Visualizar" oncomplete="$('#modalView').modal('show')"
-                                                 update=":modalView" ajax="true" actionListener="#{pontosTuristicos.updateSelectedTouristSpot(item.id, item.tipoDeAtracao)}"
-                                                 >
-                                </p:commandButton>
-                            </b:panel>
-                            <b:container></b:container>
-                        </h:form>
-
-                    </ui:repeat> 
-
-                </h:panelGroup>
-                <h:panelGroup id="pontes">
-                    <ui:repeat value="${pontosTuristicos.pontes}" var="item" rendered="#{pontosTuristicos.isPonteFiltered}">
-
-                        <h:form>
-                            <b:container></b:container>
-                            <b:panel styleClass="card" title="#{item.nome}" collapsible="false">
-                                <h:outputText value="#{item.tipoDeAtracao}"></h:outputText>
-                                <!--<f:ajax></f:ajax>--> 
-                                <p:commandButton value="Visualizar" oncomplete="$('#modalView').modal('show')"
-                                                 update=":modalView" ajax="true" actionListener="#{pontosTuristicos.updateSelectedTouristSpot(item.id, item.tipoDeAtracao)}"
-                                                 >
-                                </p:commandButton>
-                            </b:panel>
-                            <b:container></b:container>
-                        </h:form>
-
-                    </ui:repeat> 
-                </h:panelGroup>
-
-                <h:panelGroup id="teatros">
-                    <ui:repeat value="${pontosTuristicos.teatros}" var="item" rendered="#{pontosTuristicos.isTeatroFiltered}">
-
-                        <h:form>
-                            <b:container></b:container>
-                            <b:panel styleClass="card" title="#{item.nome}" collapsible="false">
-                                <h:outputText value="#{item.tipoDeAtracao}"></h:outputText>
-                                <!--<f:ajax></f:ajax>--> 
-                                <p:commandButton value="Visualizar" oncomplete="$('#modalView').modal('show')"
-                                                 update=":modalView" ajax="true" actionListener="#{pontosTuristicos.updateSelectedTouristSpot(item.id, item.tipoDeAtracao)}"
-                                                 >
-                                </p:commandButton>
-                            </b:panel>
-                            <b:container></b:container>
-                        </h:form>
-
-                    </ui:repeat> 
-                </h:panelGroup>
             </h:panelGroup>
 
         </f:view>

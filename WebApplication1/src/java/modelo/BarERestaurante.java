@@ -10,7 +10,7 @@ package modelo;
  * @author euluc
  */
 public class BarERestaurante extends touristSpot {
-    
+
     //TO DO - Adicionar no construtor ele receber um double latitude um double longitude
     private String endereco;
     private String telefone;
@@ -18,11 +18,20 @@ public class BarERestaurante extends touristSpot {
     private String site;
     private String email;
 
-
-    // Construtor com todos os atributos
     public BarERestaurante(int _id, String nome, String endereco, String telefone,
-                              String especialidade, String site, String email) {
+            String especialidade, String site, String email) {
         super(_id, nome);
+        this.endereco = endereco;
+        this.telefone = telefone;
+        this.especialidade = especialidade;
+        this.site = site;
+        this.email = email;
+    }
+    
+// Construtor com todos os atributos
+    public BarERestaurante(int _id, String nome, String endereco, String telefone,
+            String especialidade, String site, String email, double latitude, double longitude) {
+        super(_id, nome, latitude, longitude);
         this.endereco = endereco;
         this.telefone = telefone;
         this.especialidade = especialidade;
@@ -73,14 +82,14 @@ public class BarERestaurante extends touristSpot {
     // Método toString para imprimir informações do objeto
     @Override
     public String toString() {
-        return "BaresERestaurantes{" +
-                "_id=" + _id +
-                ", nome='" + nome + '\'' +
-                ", endereco='" + endereco + '\'' +
-                ", telefone='" + telefone + '\'' +
-                ", especialidade='" + especialidade + '\'' +
-                ", site='" + site + '\'' +
-                ", email='" + email + '\'' +
-                '}';
+        return "BaresERestaurantes{"
+                + "_id=" + _id
+                + ", nome='" + nome + '\''
+                + ", endereco='" + endereco + '\''
+                + ", telefone='" + telefone + '\''
+                + ", especialidade='" + especialidade + '\''
+                + ", site='" + site + '\''
+                + ", email='" + email + '\''
+                + '}';
     }
 }

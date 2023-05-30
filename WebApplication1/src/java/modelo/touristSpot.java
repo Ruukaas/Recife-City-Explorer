@@ -15,10 +15,22 @@ public abstract class touristSpot {
     protected int _id;
     protected String nome;
     protected String tipoDeAtracao;
+    protected double latitude;
+    protected double longitude;
 
-    public touristSpot(int _id, String nome) {
+    public touristSpot(int _id, String nome, double latitude, double longitude) {
         this._id = _id;
         this.nome = nome;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        
+        this.setTipoDeAtracao("");
+    }
+    
+      public touristSpot(int _id, String nome) {
+        this._id = _id;
+        this.nome = nome;
+        
         this.setTipoDeAtracao("");
     }
 
@@ -37,6 +49,25 @@ public abstract class touristSpot {
     public void setNome(String nome) {
         this.nome = nome;
     }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+    
+    
+    
 
     public String getTipoDeAtracao() {
         return tipoDeAtracao;

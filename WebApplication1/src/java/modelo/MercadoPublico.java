@@ -13,16 +13,13 @@ public class MercadoPublico extends touristSpot{
     
     private String descricao;
     private String bairro;
-    private double latitude;
-    private double longitude;
+
 
     // Construtor com todos os atributos
     public MercadoPublico(int _id, String nome, String descricao, String bairro, double latitude, double longitude) {
-        super(_id, nome);
+        super(_id, nome, latitude, longitude);
         this.descricao = descricao;
         this.bairro = bairro;
-        this.latitude = latitude;
-        this.longitude = longitude;
     }
 
     // Getters e Setters para todos os atributos
@@ -40,22 +37,6 @@ public class MercadoPublico extends touristSpot{
 
     public void setBairro(String bairro) {
         this.bairro = bairro;
-    }
-
-    public double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
-
-    public double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
     }
 
     // Método toString para imprimir informações do objeto

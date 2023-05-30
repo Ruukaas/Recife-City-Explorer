@@ -15,19 +15,16 @@ public class Teatro extends touristSpot{
     private String bairro;
     private String logradouro;
     private String telefone;
-    private double latitude;
-    private double longitude;
+
 
     // Construtor com todos os atributos
     public Teatro(int _id, String nome, String descricao, String bairro, String logradouro,
                   String telefone, double latitude, double longitude) {
-        super(_id, nome);
+        super(_id, nome, latitude, longitude);
         this.descricao = descricao;
         this.bairro = bairro;
         this.logradouro = logradouro;
         this.telefone = telefone;
-        this.latitude = latitude;
-        this.longitude = longitude;
     }
 
     public String getDescricao() {
@@ -60,22 +57,6 @@ public class Teatro extends touristSpot{
 
     public void setTelefone(String telefone) {
         this.telefone = telefone;
-    }
-
-    public double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
-
-    public double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
     }
 
     // Método toString para imprimir informações do objeto

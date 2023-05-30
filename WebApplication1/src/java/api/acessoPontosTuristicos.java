@@ -3,6 +3,7 @@ package api;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -11,6 +12,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
+import javax.faces.component.UIViewRoot;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import jdk.nashorn.internal.parser.JSONParser;
 import modelo.BarERestaurante;
 import modelo.CentroDeCompras;
@@ -34,7 +41,18 @@ import org.primefaces.json.JSONObject;
 //Testar em todos os "gets" se a latitude ou longitude ta retornando nulo
 //Talvez criar uma classe abstrata de requisição get
 @ManagedBean(name = "pontosTuristicos")
-public class acessoPontosTuristicos {
+@ViewScoped
+public class acessoPontosTuristicos implements Serializable {
+
+    String teste = "alululule";
+
+    public String getTeste() {
+        return teste;
+    }
+
+    public void setTeste(String teste) {
+        this.teste = teste;
+    }
 
     //Variáveis usadas para dar informações ao modal
     int currentID;
@@ -49,14 +67,14 @@ public class acessoPontosTuristicos {
     StringBuilder response;
 
     //Variáveis de controle do filtro
-    boolean isBarERestauranteFiltered = true;
-    boolean isCentroDeComprasFiltered = true;
-    boolean isFeiraLiveFiltered = true;
-    boolean isHotelFiltered = true;
-    boolean isMercadoPublicoFiltered = true;
-    boolean isMuseuFiltered = true;
-    boolean isPonteFiltered = true;
-    boolean isTeatroFiltered = true;
+    boolean isBarERestauranteFiltered;
+    boolean isCentroDeComprasFiltered;
+    boolean isFeiraLiveFiltered;
+    boolean isHotelFiltered;
+    boolean isMercadoPublicoFiltered;
+    boolean isMuseuFiltered;
+    boolean isPonteFiltered;
+    boolean isTeatroFiltered;
 
     //Listas com as atrações
     List<Museu> museus;
@@ -67,10 +85,25 @@ public class acessoPontosTuristicos {
     List<CentroDeCompras> centrosDeCompras;
     List<Hotel> hoteis;
     List<BarERestaurante> baresERestaurantes;
+    List<touristSpot> allPontosTuristicos;
+    
+    //
+    acessoAPIGeocoding geocod;
 
     @PostConstruct
     public void init() {
+
+        isBarERestauranteFiltered = true;
+        isCentroDeComprasFiltered = true;
+        isFeiraLiveFiltered = true;
+        isHotelFiltered = true;
+        isMercadoPublicoFiltered = true;
+        isMuseuFiltered = true;
+        isPonteFiltered = true;
+        isTeatroFiltered = true;
+
         this.currentTouristSpot = null;
+        geocod = new acessoAPIGeocoding();
 
         museus = new ArrayList<>();
         updateMuseus();
@@ -94,7 +127,14 @@ public class acessoPontosTuristicos {
         updateHoteis();
 
         baresERestaurantes = new ArrayList<>();
-        updateBaresERestaurantes();
+//        updateBaresERestaurantes();
+
+        allPontosTuristicos = new ArrayList<>();
+        updateAllPontosTuristicos();
+
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        UIViewRoot viewRoot = facesContext.getViewRoot();
+        viewRoot.getViewMap().put("lista", allPontosTuristicos);
     }
 
     public acessoPontosTuristicos() {
@@ -148,7 +188,8 @@ public class acessoPontosTuristicos {
     //Usado no getBaresERestaurantes
     public Double[] getLatELongBaseadoNoEndereco(String endereco) {
         Double[] currentLatLong = new Double[2];
-        //Atribuir retorno da chamada da função do que converte o endereço em lat e long no currentLatLong
+        System.out.println("\n\n\n\n\n\n\n " + endereco + "\n\n\n\n\n\n\n\n\n");
+        currentLatLong = geocod.getLatLong(endereco);
         return currentLatLong;
     }
 
@@ -468,7 +509,7 @@ public class acessoPontosTuristicos {
                 try {
                     // Obter o objeto JSON correspondente ao registro atual
                     JSONObject currentBarERestaurante = arrayBaresERestaurantes.getJSONObject(i);
-
+                    
 //                if(currentBarERestaurante.getString("latitude").equals("null") || currentBarERestaurante.getString("longitude").equals("null")) {
 //                    continue;
 //                }
@@ -481,8 +522,8 @@ public class acessoPontosTuristicos {
                     String site = currentBarERestaurante.getString("site");
                     String email = currentBarERestaurante.getString("email");
 
-//Chamar a função getLatELongBaseadoNoEndereco passando o endereco como parâmetro e criar dois doubles latitude e longitude e passar eles na chamada do construtor
-                    BarERestaurante barERestaurante = new BarERestaurante(_id, nome, endereco, telefone, especialidade, site, email);
+                    Double[] currentLatLong = getLatELongBaseadoNoEndereco(endereco);
+                    BarERestaurante barERestaurante = new BarERestaurante(_id, nome, endereco, telefone, especialidade, site, email,currentLatLong[0], currentLatLong[1]);
 
 // Adicionar o objeto à lista
                     baresERestaurantes.add(barERestaurante);
@@ -493,46 +534,54 @@ public class acessoPontosTuristicos {
         }
     }
 
+    public void updateAllPontosTuristicos() {
+        allPontosTuristicos.addAll(baresERestaurantes);
+        allPontosTuristicos.addAll(centrosDeCompras);
+        allPontosTuristicos.addAll(hoteis);
+        allPontosTuristicos.addAll(mercadosPublicos);
+        allPontosTuristicos.addAll(museus);
+        allPontosTuristicos.addAll(pontes);
+        allPontosTuristicos.addAll(teatros);
+//        allPontosTuristicos.addAll(feirasLivres);
+    }
+
     public void updateSelectedTouristSpot(int id, String tipoTouristSpot) {
 
-        System.out.println(id);
-        System.out.println(tipoTouristSpot.concat("?"));
         switch (tipoTouristSpot) {
             case "Bar E Restaurante":
                 currentTouristSpot = baresERestaurantes.get(id - 1);
-                System.out.println(currentTouristSpot.getNome());
+
                 break;
             case "Centro De Compras":
                 currentTouristSpot = centrosDeCompras.get(id - 1);
-                System.out.println(currentTouristSpot.getNome());
+
                 break;
             case "Feira Livre":
                 currentTouristSpot = feirasLivres.get(id - 1);
-                System.out.println(currentTouristSpot.getNome());
+
                 break;
             case "Hotel":
                 currentTouristSpot = hoteis.get(id - 1);
-                System.out.println(currentTouristSpot.getNome());
+
                 break;
             case "Mercado Publico":
                 currentTouristSpot = mercadosPublicos.get(id - 1);
-                System.out.println(currentTouristSpot.getNome());
+
                 break;
             case "Museu":
                 currentTouristSpot = museus.get(id - 1);
-                System.out.println(currentTouristSpot.getNome());
+
                 break;
             case "Ponte":
                 currentTouristSpot = pontes.get(id - 1);
-                System.out.println(currentTouristSpot.getNome());
+
                 break;
             case "Teatro":
                 currentTouristSpot = teatros.get(id - 1);
-                System.out.println(currentTouristSpot.getNome());
+
                 break;
         }
-        
-        
+
     }
 
     //Gets and Setters
@@ -662,6 +711,14 @@ public class acessoPontosTuristicos {
 
     public void setBaresERestaurantes(List<BarERestaurante> baresERestaurantes) {
         this.baresERestaurantes = baresERestaurantes;
+    }
+
+    public List<touristSpot> getAllPontosTuristicos() {
+        return allPontosTuristicos;
+    }
+
+    public void setAllPontosTuristicos(List<touristSpot> allPontosTuristicos) {
+        this.allPontosTuristicos = allPontosTuristicos;
     }
 
     public int getCurrentID() {

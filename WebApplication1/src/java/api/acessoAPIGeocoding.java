@@ -5,9 +5,11 @@
  */
 package api;
 
+import geolocalizacao.pontosProximos;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -15,12 +17,24 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
+import javax.faces.component.UIViewRoot;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import jdk.nashorn.internal.runtime.URIUtils;
+import modelo.BarERestaurante;
+import modelo.Museu;
+import modelo.touristSpot;
 import org.primefaces.json.JSONArray;
 import org.primefaces.json.JSONException;
 import org.primefaces.json.JSONObject;
@@ -29,10 +43,10 @@ import org.primefaces.json.JSONObject;
  *
  * @author ALUNO
  */
-
 //TO DO - Melhorar o valid structure
 @ManagedBean
-public class acessoAPIGeocoding {
+@ViewScoped
+public class acessoAPIGeocoding implements Serializable {
 
     String currentSearch;
 
@@ -168,9 +182,33 @@ public class acessoAPIGeocoding {
     }
 
     public void atualizarAtracoesProximas() {
+        System.out.println("Chamou");
         if (hasValidStructure()) {
             Double[] latlong = getLatLong(currentSearch);
-            //Organizar listas, vê se listas do managedBean são estaticas, se sim organizar elas de acordo com essa latLong
+
+            pontosProximos currentPP = new pontosProximos(latlong[0], latlong[1]);
+
+            FacesContext facesContext = FacesContext.getCurrentInstance();
+            UIViewRoot viewRoot = facesContext.getViewRoot();
+            List<touristSpot> elemento = (List<touristSpot>) viewRoot.getViewMap().get("lista");
+
+            //Ordenando
+            Collections.sort(elemento, new Comparator<touristSpot>() {
+
+                @Override
+                public int compare(touristSpot e1, touristSpot e2) {
+                    // Calcula a distância entre o elemento e a latitude/longitude fixa
+                    double distanciaE1 = currentPP.calcularDistancia(e1.getLatitude(), e1.getLongitude());
+                    double distanciaE2 = currentPP.calcularDistancia(e2.getLatitude(), e2.getLongitude());
+
+                    // Compara as distâncias
+                    return Double.compare(distanciaE1, distanciaE2);
+                }
+            });
+
+            acessoPontosTuristicos meuBean1 = FacesContext.getCurrentInstance().getApplication()
+                    .evaluateExpressionGet(FacesContext.getCurrentInstance(), "#{pontosTuristicos}", acessoPontosTuristicos.class);
+            meuBean1.setAllPontosTuristicos(elemento);
         } else {
             FacesContext.getCurrentInstance()
                     .addMessage(null, new FacesMessage(
@@ -181,6 +219,6 @@ public class acessoAPIGeocoding {
 
     public static void main(String[] args) throws JSONException, MalformedURLException, URISyntaxException, UnsupportedEncodingException {
 //        System.out.println(new acessoAPIGeocoding().getLatLong("https://api.opencagedata.com/geocode/v1/json?key=6a6de70f376e4015b6f857e263e4a383&q=Rua Cafelândia, Carapicuíba, Brasil&limit=1")[0]);
-        System.out.println(new acessoAPIGeocoding().getLatLong("Rua Cafelândia, São Paulo, Brasil")[1]);//        URL ur = new URL("https://api.opencagedata.com/geocode/v1/json?key=6a6de70f376e4015b6f857e263e4a383&q=Rua Vale do Siriji");;
+        System.out.println(new acessoAPIGeocoding().getLatLong("Avenida Professor Luiz Freire 500, Pernambuco, Brasil")[0]);//        URL ur = new URL("https://api.opencagedata.com/geocode/v1/json?key=6a6de70f376e4015b6f857e263e4a383&q=Rua Vale do Siriji");;
     }
 }

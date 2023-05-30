@@ -14,20 +14,16 @@ public class Museu extends touristSpot {
     private String descricao;
     private String bairro;
     private String logradouro;
-    private double latitude;
-    private double longitude;
     private String telefone;
     private String site;
 
     // Construtor com todos os atributos
     public Museu(int _id,String nome, String descricao, String bairro, String logradouro, double latitude,
                  double longitude, String telefone, String site) {
-        super(_id, nome);
+        super(_id, nome, latitude, longitude);
         this.descricao = descricao;
         this.bairro = bairro;
         this.logradouro = logradouro;
-        this.latitude = latitude;
-        this.longitude = longitude;
         this.telefone = telefone;
         this.site = site;
     }
@@ -54,22 +50,6 @@ public class Museu extends touristSpot {
 
     public void setLogradouro(String logradouro) {
         this.logradouro = logradouro;
-    }
-
-    public double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
-
-    public double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
     }
 
     public String getTelefone() {

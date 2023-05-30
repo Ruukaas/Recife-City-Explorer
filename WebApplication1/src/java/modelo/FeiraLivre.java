@@ -14,21 +14,15 @@ public class FeiraLivre extends touristSpot {
     private String dias;
     private String horario;
     private String observacao;
-    private double latitude;
-    private double longitude;
-
-  
 
     // Construtor com todos os atributos
     public FeiraLivre(int _id, String nome, String localizacao, String dias, String horario,
                       String observacao, double latitude, double longitude) {
-        super(_id, nome);
+        super(_id, nome, latitude, longitude);
         this.localizacao = localizacao;
         this.dias = dias;
         this.horario = horario;
         this.observacao = observacao;
-        this.latitude = latitude;
-        this.longitude = longitude;
     }
 
     // Getters e Setters para todos os atributos
@@ -63,22 +57,6 @@ public class FeiraLivre extends touristSpot {
 
     public void setObservacao(String observacao) {
         this.observacao = observacao;
-    }
-
-    public double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
-
-    public double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
     }
 
     // Método toString para imprimir informações do objeto

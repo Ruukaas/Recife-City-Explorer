@@ -48,11 +48,11 @@ public class pontosProximos {
     }
 
     //Calculo de Vincenty
-    public double calcularDistancia(double lat1, double lon1, double lat2, double lon2) {
+    public double calcularDistancia(double lat1, double lon1) {
         double phi1 = Math.toRadians(lat1);
-        double phi2 = Math.toRadians(lat2);
+        double phi2 = Math.toRadians(currentLocalizacaoLat);
         double lambda1 = Math.toRadians(lon1);
-        double lambda2 = Math.toRadians(lon2);
+        double lambda2 = Math.toRadians(currentLocalizacaoLon);
 
         double deltaLambda = lambda2 - lambda1;
 
@@ -84,8 +84,8 @@ public class pontosProximos {
         Collections.sort(currentLista, new Comparator<Museu>() {
             @Override
             public int compare(Museu e1, Museu e2) {
-                double distanciaE1 = calcularDistancia(e1.getLatitude(), e1.getLongitude(), currentLocalizacaoLat, currentLocalizacaoLon);
-                double distanciaE2 = calcularDistancia(e2.getLatitude(), e2.getLongitude(), currentLocalizacaoLat, currentLocalizacaoLon);
+                double distanciaE1 = calcularDistancia(e1.getLatitude(), e1.getLongitude());
+                double distanciaE2 = calcularDistancia(e2.getLatitude(), e2.getLongitude());
 
                 return Double.compare(distanciaE1, distanciaE2);
             }
