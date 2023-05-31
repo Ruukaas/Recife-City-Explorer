@@ -66,6 +66,8 @@ public class acessoAPIGeocoding implements Serializable {
 
     public Double[] getLatLong(String endereco) {
         Double[] currentLatLong = new Double[2];
+        //JSON
+        JSONArray jsonArray = null;
         try {
 
             endereco = URLEncoder.encode(endereco);
@@ -81,8 +83,6 @@ public class acessoAPIGeocoding implements Serializable {
                                 FacesMessage.SEVERITY_ERROR, "Não foi possível encontrar a localização",
                                 "Tente novamente mais tarde"));
             }
-            //JSON
-            JSONArray jsonArray = null;
 
             try {
                 if (responseCode == HttpURLConnection.HTTP_OK) {
@@ -184,20 +184,24 @@ public class acessoAPIGeocoding implements Serializable {
     public void atualizarAtracoesProximas() {
         System.out.println("Chamou");
         if (hasValidStructure()) {
-            Double[] latlong = getLatLong(currentSearch);
+            Double[] latlong = getLatLong(currentSearch); //Latitude e longitude do endereço
 
             pontosProximos currentPP = new pontosProximos(latlong[0], latlong[1]);
 
             FacesContext facesContext = FacesContext.getCurrentInstance();
             UIViewRoot viewRoot = facesContext.getViewRoot();
-            List<touristSpot> elemento = (List<touristSpot>) viewRoot.getViewMap().get("lista");
+            List<touristSpot> listTouristSpot = (List<touristSpot>) viewRoot.getViewMap().get("lista");
+            
+            listTouristSpot.forEach((currentElemento) -> {
+                currentElemento.setCurrentDistanciaParaLoc(currentPP.calcularDistancia(currentElemento.getLatitude(), currentElemento.getLongitude()));
+            });
 
             //Ordenando
-            Collections.sort(elemento, new Comparator<touristSpot>() {
+            Collections.sort(listTouristSpot, new Comparator<touristSpot>() {
 
                 @Override
                 public int compare(touristSpot e1, touristSpot e2) {
-                    // Calcula a distância entre o elemento e a latitude/longitude fixa
+                    // Calcula a distância entre o listTouristSpot e a latitude/longitude fixa
                     double distanciaE1 = currentPP.calcularDistancia(e1.getLatitude(), e1.getLongitude());
                     double distanciaE2 = currentPP.calcularDistancia(e2.getLatitude(), e2.getLongitude());
 
@@ -208,17 +212,13 @@ public class acessoAPIGeocoding implements Serializable {
 
             acessoPontosTuristicos meuBean1 = FacesContext.getCurrentInstance().getApplication()
                     .evaluateExpressionGet(FacesContext.getCurrentInstance(), "#{pontosTuristicos}", acessoPontosTuristicos.class);
-            meuBean1.setAllPontosTuristicos(elemento);
+            meuBean1.setIsOrdenacaoActive(true);
+            meuBean1.setAllPontosTuristicos(listTouristSpot);
         } else {
             FacesContext.getCurrentInstance()
                     .addMessage(null, new FacesMessage(
                             FacesMessage.SEVERITY_ERROR, "Endereço incorreto",
                             "O endereço deve estar no formato \'Rua,Cidade/Estado,País\'"));
         }
-    }
-
-    public static void main(String[] args) throws JSONException, MalformedURLException, URISyntaxException, UnsupportedEncodingException {
-//        System.out.println(new acessoAPIGeocoding().getLatLong("https://api.opencagedata.com/geocode/v1/json?key=6a6de70f376e4015b6f857e263e4a383&q=Rua Cafelândia, Carapicuíba, Brasil&limit=1")[0]);
-        System.out.println(new acessoAPIGeocoding().getLatLong("Avenida Professor Luiz Freire 500, Pernambuco, Brasil")[0]);//        URL ur = new URL("https://api.opencagedata.com/geocode/v1/json?key=6a6de70f376e4015b6f857e263e4a383&q=Rua Vale do Siriji");;
     }
 }

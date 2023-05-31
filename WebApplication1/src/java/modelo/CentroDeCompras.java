@@ -5,10 +5,16 @@
  */
 package modelo;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
+
 /**
  *
  * @author euluc
  */
+
+@ManagedBean(name = "centroCompras")
+@ViewScoped
 public class CentroDeCompras extends touristSpot{
 
     private String descricao;
@@ -18,14 +24,50 @@ public class CentroDeCompras extends touristSpot{
     private String site;
     private String funcionamento;
     private String funcionamentoDomingo;
+    private String endereco;
+    private String especialidade;
+    private String email;
 
 
 
     // Construtor com todos os atributos
     public CentroDeCompras(int _id, String nome, String descricao, String bairro, String logradouro,
-            double latitude, double longitude, String telefone, String site,
-            String funcionamento, String funcionamentoDomingo) {
+            double latitude, double longitude, String telefone, String site, String funcionamento, String funcionamentoDomingo,
+            String endereco, String especialidade, String email) {
         super(_id, nome, latitude, longitude);
+        this.descricao = descricao;
+        this.bairro = bairro;
+        this.logradouro = logradouro;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.telefone = telefone;
+        this.site = site;
+        this.funcionamento = funcionamento;
+        this.funcionamentoDomingo = funcionamentoDomingo;
+        this.endereco = endereco;
+        this.especialidade = especialidade;
+        this.email = email;
+       
+    }
+
+    public CentroDeCompras(int _id, String nome, String endereco, String especialidade, String email, String descricao, String bairro, String logradouro, Double latitude, Double longitude, String telefone, String site, String funcionamento, String funcionamentoDomingo) {
+        super(_id, nome);
+        this.descricao = descricao;
+        this.bairro = bairro;
+        this.logradouro = logradouro;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.telefone = telefone;
+        this.site = site;
+        this.funcionamento = funcionamento;
+        this.funcionamentoDomingo = funcionamentoDomingo;
+        this.endereco = endereco;
+        this.especialidade = especialidade;
+        this.email = email;
+    }
+
+    public CentroDeCompras(int _id, String nome, String descricao, String bairro, String logradouro, Double latitude, Double longitude, String telefone, String site, String funcionamento, String funcionamentoDomingo) {
+        super(_id, nome);
         this.descricao = descricao;
         this.bairro = bairro;
         this.logradouro = logradouro;
@@ -92,6 +134,32 @@ public class CentroDeCompras extends touristSpot{
     public void setFuncionamentoDomingo(String funcionamentoDomingo) {
         this.funcionamentoDomingo = funcionamentoDomingo;
     }
+
+    public String getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
+    }
+
+    public String getEspecialidade() {
+        return especialidade;
+    }
+
+    public void setEspecialidade(String especialidade) {
+        this.especialidade = especialidade;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    
+    
 
     // Método toString para imprimir informações do objeto
     @Override

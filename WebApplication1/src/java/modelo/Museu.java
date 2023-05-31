@@ -11,22 +11,65 @@ package modelo;
  */
 public class Museu extends touristSpot {
     
+   
     private String descricao;
     private String bairro;
     private String logradouro;
     private String telefone;
     private String site;
+    private String funcionamento;
+    private String funcionamentoDomingo;
+    private String endereco;
+    private String especialidade;
+    private String email;
 
     // Construtor com todos os atributos
     public Museu(int _id,String nome, String descricao, String bairro, String logradouro, double latitude,
-                 double longitude, String telefone, String site) {
+                 double longitude, String telefone, String site, String funcionamento, String funcionamentoDomingo,
+            String endereco, String especialidade, String email) {
         super(_id, nome, latitude, longitude);
         this.descricao = descricao;
         this.bairro = bairro;
         this.logradouro = logradouro;
         this.telefone = telefone;
         this.site = site;
+        this.funcionamento = funcionamento;
+        this.funcionamentoDomingo = funcionamentoDomingo;
+        this.endereco = endereco;
+        this.especialidade = especialidade;
+        this.email = email;
     }
+    
+    public Museu(int _id, String nome, String endereco, String telefone,
+            String especialidade, String site, String email, String descricao, String bairro, String logradouro, 
+            String funcionamento, String funcionamentoDomingo) {
+    super(_id, nome);
+    this.endereco = endereco;
+    this.telefone = telefone;
+    this.especialidade = especialidade;
+    this.site = site;
+    this.email = email;
+    this.descricao = descricao;
+    this.bairro = bairro;
+    this.logradouro = logradouro;
+    this.funcionamento = funcionamento;
+    this.funcionamentoDomingo = funcionamentoDomingo;
+    }
+
+    public Museu(int _id, String nome, String descricao, String bairro, String logradouro, Double latitude, Double longitude, String telefone, String site) {
+        super(_id, nome);
+        this.descricao = descricao;
+        this.bairro = bairro;
+        this.logradouro = logradouro;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.telefone = telefone;
+        this.site = site;
+        this.funcionamento = funcionamento;
+        this.funcionamentoDomingo = funcionamentoDomingo;
+        this.endereco = endereco;
+        this.especialidade = especialidade;
+        this.email = email;    }
 
     public String getDescricao() {
         return descricao;

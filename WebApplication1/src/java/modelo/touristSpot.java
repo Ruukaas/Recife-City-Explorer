@@ -17,20 +17,21 @@ public abstract class touristSpot {
     protected String tipoDeAtracao;
     protected double latitude;
     protected double longitude;
+    protected double currentDistanciaParaLoc;
 
     public touristSpot(int _id, String nome, double latitude, double longitude) {
         this._id = _id;
         this.nome = nome;
         this.latitude = latitude;
         this.longitude = longitude;
-        
         this.setTipoDeAtracao("");
+        this.currentDistanciaParaLoc = 0.0;
     }
-    
-      public touristSpot(int _id, String nome) {
+
+    public touristSpot(int _id, String nome) {
         this._id = _id;
         this.nome = nome;
-        
+        this.currentDistanciaParaLoc = 0.0;
         this.setTipoDeAtracao("");
     }
 
@@ -65,9 +66,6 @@ public abstract class touristSpot {
     public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
-    
-    
-    
 
     public String getTipoDeAtracao() {
         return tipoDeAtracao;
@@ -88,6 +86,14 @@ public abstract class touristSpot {
         }
 
         this.tipoDeAtracao = resultado.toString();
+    }
+
+    public double getCurrentDistanciaParaLoc() {
+        return currentDistanciaParaLoc;
+    }
+
+    public void setCurrentDistanciaParaLoc(double currentDistanciaParaLoc) {
+        this.currentDistanciaParaLoc = currentDistanciaParaLoc;
     }
 
 }

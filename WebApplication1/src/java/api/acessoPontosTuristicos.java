@@ -6,12 +6,14 @@ import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIViewRoot;
@@ -44,15 +46,6 @@ import org.primefaces.json.JSONObject;
 @ViewScoped
 public class acessoPontosTuristicos implements Serializable {
 
-    String teste = "alululule";
-
-    public String getTeste() {
-        return teste;
-    }
-
-    public void setTeste(String teste) {
-        this.teste = teste;
-    }
 
     //Variáveis usadas para dar informações ao modal
     int currentID;
@@ -87,9 +80,13 @@ public class acessoPontosTuristicos implements Serializable {
     List<BarERestaurante> baresERestaurantes;
     List<touristSpot> allPontosTuristicos;
     
-    //
-    acessoAPIGeocoding geocod;
+    //Variável de controle da ordenação
+    boolean isOrdenacaoActive;
 
+//    @ManagedProperty("#{acessoAPIGeocoding}")
+//    acessoAPIGeocoding geocod;
+    
+    
     @PostConstruct
     public void init() {
 
@@ -101,9 +98,10 @@ public class acessoPontosTuristicos implements Serializable {
         isMuseuFiltered = true;
         isPonteFiltered = true;
         isTeatroFiltered = true;
+        
+        isOrdenacaoActive = false;
 
         this.currentTouristSpot = null;
-        geocod = new acessoAPIGeocoding();
 
         museus = new ArrayList<>();
         updateMuseus();
@@ -135,6 +133,7 @@ public class acessoPontosTuristicos implements Serializable {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         UIViewRoot viewRoot = facesContext.getViewRoot();
         viewRoot.getViewMap().put("lista", allPontosTuristicos);
+
     }
 
     public acessoPontosTuristicos() {
@@ -186,13 +185,12 @@ public class acessoPontosTuristicos implements Serializable {
     }
 
     //Usado no getBaresERestaurantes
-    public Double[] getLatELongBaseadoNoEndereco(String endereco) {
-        Double[] currentLatLong = new Double[2];
-        System.out.println("\n\n\n\n\n\n\n " + endereco + "\n\n\n\n\n\n\n\n\n");
-        currentLatLong = geocod.getLatLong(endereco);
-        return currentLatLong;
-    }
-
+//    public Double[] getLatELongBaseadoNoEndereco(String endereco) {
+//        Double[] currentLatLong = new Double[2];
+//        System.out.println("\n\n\n\n\n\n\n " + endereco + "\n\n\n\n\n\n\n\n\n");
+//        currentLatLong = geocod.getLatLong(endereco);
+//        return currentLatLong;
+//    }
     public void updateMuseus() {
         currentAPIURL = "http://dados.recife.pe.gov.br/api/3/action/datastore_search?resource_id=97ab18da-f940-43b1-b0d4-a9e93e90bed5";
         connectURL();
@@ -509,21 +507,24 @@ public class acessoPontosTuristicos implements Serializable {
                 try {
                     // Obter o objeto JSON correspondente ao registro atual
                     JSONObject currentBarERestaurante = arrayBaresERestaurantes.getJSONObject(i);
-                    
+
 //                if(currentBarERestaurante.getString("latitude").equals("null") || currentBarERestaurante.getString("longitude").equals("null")) {
 //                    continue;
 //                }
 // Extrair os valores do registro e criar um objeto BaresERestaurantes
                     int _id = currentBarERestaurante.getInt("_id");
-                    String nome = currentBarERestaurante.getString("nome");
+                    String nome = new String(currentBarERestaurante.getString("nome").getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8);
                     String endereco = currentBarERestaurante.getString("endereco");
                     String telefone = currentBarERestaurante.getString("telefone");
                     String especialidade = currentBarERestaurante.getString("especialidade");
                     String site = currentBarERestaurante.getString("site");
                     String email = currentBarERestaurante.getString("email");
-
-                    Double[] currentLatLong = getLatELongBaseadoNoEndereco(endereco);
-                    BarERestaurante barERestaurante = new BarERestaurante(_id, nome, endereco, telefone, especialidade, site, email,currentLatLong[0], currentLatLong[1]);
+                    
+                    BarERestaurante barERestaurante = new BarERestaurante(_id, nome, endereco, telefone, especialidade, site, email);
+                    
+                    
+//                    Double[] currentLatLong = getLatELongBaseadoNoEndereco(endereco);
+//                    BarERestaurante barERestaurante = new BarERestaurante(_id, nome, endereco, telefone, especialidade, site, email, currentLatLong[0], currentLatLong[1]);
 
 // Adicionar o objeto à lista
                     baresERestaurantes.add(barERestaurante);
@@ -535,7 +536,7 @@ public class acessoPontosTuristicos implements Serializable {
     }
 
     public void updateAllPontosTuristicos() {
-        allPontosTuristicos.addAll(baresERestaurantes);
+//        allPontosTuristicos.addAll(baresERestaurantes);
         allPontosTuristicos.addAll(centrosDeCompras);
         allPontosTuristicos.addAll(hoteis);
         allPontosTuristicos.addAll(mercadosPublicos);
@@ -546,7 +547,9 @@ public class acessoPontosTuristicos implements Serializable {
     }
 
     public void updateSelectedTouristSpot(int id, String tipoTouristSpot) {
-
+        System.out.println("Chamou");
+        System.out.println(id);
+        System.out.println(tipoTouristSpot);
         switch (tipoTouristSpot) {
             case "Bar E Restaurante":
                 currentTouristSpot = baresERestaurantes.get(id - 1);
@@ -582,6 +585,66 @@ public class acessoPontosTuristicos implements Serializable {
                 break;
         }
 
+    }
+
+    public boolean isInstanceOf(Object objeto, Class<?> classe) {
+        return classe.isInstance(objeto);
+    }
+
+    public Museu convertToMuseu(Object objeto) {
+        if (objeto instanceof Museu) {
+            return (Museu) objeto;
+        }
+        return null;
+    }
+
+    public BarERestaurante convertToBarERestaurante(Object objeto) {
+        if (objeto instanceof BarERestaurante) {
+            return (BarERestaurante) objeto;
+        }
+        return null;
+    }
+
+    public CentroDeCompras convertToCentroDeCompras(Object objeto) {
+        if (objeto instanceof CentroDeCompras) {
+            return (CentroDeCompras) objeto;
+        }
+        return null;
+    }
+
+    public FeiraLivre convertToFeiraLivre(Object objeto) {
+        if (objeto instanceof FeiraLivre) {
+            return (FeiraLivre) objeto;
+        }
+        return null;
+    }
+
+    public Hotel convertToHotel(Object objeto) {
+        if (objeto instanceof Hotel) {
+            return (Hotel) objeto;
+        }
+        return null;
+    }
+
+    public MercadoPublico convertToMercadoPublico(Object objeto) {
+        if (objeto instanceof MercadoPublico) {
+            return (MercadoPublico) objeto;
+        }
+        return null;
+    }
+
+    public Ponte convertToPonte(Object objeto) {
+        if (objeto instanceof Ponte) {
+            return (Ponte) objeto;
+        }
+        return null;
+    }
+
+    public Teatro convertToTeatro(Object objeto) {
+        if (objeto instanceof Teatro) {
+            return (Teatro) objeto;
+        }
+        return null;
     }
 
     //Gets and Setters
@@ -647,6 +710,14 @@ public class acessoPontosTuristicos implements Serializable {
 
     public void setIsTeatroFiltered(boolean isTeatroFiltered) {
         this.isTeatroFiltered = isTeatroFiltered;
+    }
+
+    public boolean isIsOrdenacaoActive() {
+        return isOrdenacaoActive;
+    }
+
+    public void setIsOrdenacaoActive(boolean isOrdenacaoActive) {
+        this.isOrdenacaoActive = isOrdenacaoActive;
     }
 
     public List<Museu> getMuseus() {
@@ -736,4 +807,13 @@ public class acessoPontosTuristicos implements Serializable {
     public void setCurrentTouristSpot(touristSpot currentTouristSpot) {
         this.currentTouristSpot = currentTouristSpot;
     }
+    
+
+//    public acessoAPIGeocoding getGeocod() {
+//        return geocod;
+//    }
+//
+//    public void setGeocod(acessoAPIGeocoding geocod) {
+//        this.geocod = geocod;
+//    }
 }

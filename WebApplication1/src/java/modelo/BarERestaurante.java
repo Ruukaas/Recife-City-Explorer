@@ -9,6 +9,7 @@ package modelo;
  *
  * @author euluc
  */
+//TODO - Talvez coloca a lat e long no toString
 public class BarERestaurante extends touristSpot {
 
     //TO DO - Adicionar no construtor ele receber um double latitude um double longitude
@@ -17,21 +18,23 @@ public class BarERestaurante extends touristSpot {
     private String especialidade;
     private String site;
     private String email;
+   
 
-    public BarERestaurante(int _id, String nome, String endereco, String telefone,
-            String especialidade, String site, String email) {
-        super(_id, nome);
+
+
+    
+// Construtor com todos os atributos
+    public BarERestaurante(int _id, String nome, String endereco, String telefone, String especialidade, String site, String email, double latitude, double longitude) {
+        super(_id, nome, latitude, longitude);
         this.endereco = endereco;
         this.telefone = telefone;
         this.especialidade = especialidade;
         this.site = site;
         this.email = email;
     }
-    
-// Construtor com todos os atributos
-    public BarERestaurante(int _id, String nome, String endereco, String telefone,
-            String especialidade, String site, String email, double latitude, double longitude) {
-        super(_id, nome, latitude, longitude);
+
+    public BarERestaurante(int _id, String nome, String endereco, String telefone, String especialidade, String site, String email) {
+        super(_id, nome);
         this.endereco = endereco;
         this.telefone = telefone;
         this.especialidade = especialidade;
@@ -79,6 +82,9 @@ public class BarERestaurante extends touristSpot {
         this.email = email;
     }
 
+    
+    
+
     // Método toString para imprimir informações do objeto
     @Override
     public String toString() {
@@ -90,6 +96,7 @@ public class BarERestaurante extends touristSpot {
                 + ", especialidade='" + especialidade + '\''
                 + ", site='" + site + '\''
                 + ", email='" + email + '\''
+               
                 + '}';
     }
 }
