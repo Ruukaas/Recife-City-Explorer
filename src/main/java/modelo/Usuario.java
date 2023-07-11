@@ -1,41 +1,42 @@
 package modelo;
 
-import java.io.Serializable;
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.DiscriminatorType;
-import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.Table;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
-import org.hibernate.validator.constraints.NotBlank;
 
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
+import java.io.Serializable;
+import java.util.List;
+import jakarta.persistence.Entity;
 
 @Entity
-@Table(name = "TB_USUARIO")
-@Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name = "DISC_USUARIO", discriminatorType = DiscriminatorType.STRING, length = 1)
-public abstract class Usuario extends Entidade implements Serializable {
-    
-    @NotBlank
-    @Size(max = 100)
-    @Column(name = "TXT_NOME", length = 100, nullable = false)
+public class Usuario implements Serializable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private int id;
+
     private String nome;
-        
-    @NotBlank
-    @Size(max = 20)
-    @Column(name = "TXT_EMAIL")
-    private String login;
-    
-    @NotBlank
-    @Size(min = 6, max = 20)
-    @Pattern(regexp = "((?=.*\\p{Digit})(?=.*\\p{Lower})(?=.*\\p{Upper})(?=.*\\p{Punct}).{6,20})", 
-            message = "{JPA.Usuario.senha}")
-    @Column(name = "TXT_SENHA")
+
+    private String email;
+
     private String senha;
-        
+
+    public Usuario(String nome, String email, String senha) {
+        this.nome = nome;
+        this.email = email;
+        this.senha = senha;
+    }
+
+    public Usuario() {
+    }
+    
+    
+
+    @ManyToMany
+    private List<concreteTouristSpot> favoritos;
+
     public String getNome() {
         return nome;
     }
@@ -43,13 +44,13 @@ public abstract class Usuario extends Entidade implements Serializable {
     public void setNome(String nome) {
         this.nome = nome;
     }
-    
-    public String getLogin() {
-        return login;
+
+    public String getEmail() {
+        return email;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getSenha() {
@@ -58,5 +59,38 @@ public abstract class Usuario extends Entidade implements Serializable {
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+
+    public List<concreteTouristSpot> getFavoritos() {
+        return favoritos;
+    }
+
+    public void setFavoritos(List<concreteTouristSpot> favoritos) {
+        this.favoritos = favoritos;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (this.getId() != 0 ? Integer.valueOf(this.id).hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (!(object instanceof Usuario)) {
+            return false;
+        }
+        Usuario other = (Usuario) object;
+        return !((this.getId() == 0 && other.getId() != 0)
+                || (this.getId() != 0 && !Integer.valueOf(this.id).equals(other.getId())));
     }
 }

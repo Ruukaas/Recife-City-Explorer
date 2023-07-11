@@ -5,19 +5,48 @@
  */
 package modelo;
 
+import jakarta.persistence.DiscriminatorColumn;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Transient;
+import java.io.Serializable;
+import java.util.List;
+
+
 /**
  *
  * @author euluc
  */
-public abstract class touristSpot {
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "spot_type")
+public abstract class touristSpot implements Serializable {
 
     //TO DO - Quando o método de converter endereço em lat/long estiver pronto, colocar o lat e long aqui
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    protected int codigo;
+    
     protected int _id;
+    @Transient
     protected String nome;
     protected String tipoDeAtracao;
+    @Transient
     protected double latitude;
+    @Transient
     protected double longitude;
+    @Transient
     protected double currentDistanciaParaLoc;
+    @ManyToMany(mappedBy = "favoritos")
+    private List<Usuario> usuarios;
+
+    public touristSpot() {
+    }
 
     public touristSpot(int _id, String nome, double latitude, double longitude) {
         this._id = _id;
@@ -95,5 +124,30 @@ public abstract class touristSpot {
     public void setCurrentDistanciaParaLoc(double currentDistanciaParaLoc) {
         this.currentDistanciaParaLoc = currentDistanciaParaLoc;
     }
+
+    public List<Usuario> getUsuarios() {
+        return usuarios;
+    }
+
+    public void setUsuarios(List<Usuario> usuarios) {
+        this.usuarios = usuarios;
+    }
+
+@Override
+public int hashCode() {
+    int hash = 0;
+    hash += (codigo != 0 ? Integer.valueOf(codigo).hashCode() : 0);
+    return hash;
+}
+
+@Override
+public boolean equals(Object object) {
+    if (!(object instanceof touristSpot)) {
+        return false;
+    }
+    touristSpot other = (touristSpot) object;
+    return !((codigo == 0 && other.codigo != 0)
+            || (codigo != 0 && !Integer.valueOf(codigo).equals(other.codigo)));
+}
 
 }

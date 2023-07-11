@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:b="http://bootsfaces.net/ui"
@@ -15,20 +15,21 @@
         <h:outputStylesheet name="css/principalPage.css"/>
         <title>Encontre Pontos Turisticos</title>
     </h:head>
-    <h:body>
+    <h:body >
 
-
-        <b:modal id="modalView" styleClass="responsiveModalPseudoClass" autoUpdate="true">
+        <b:modal id="modalView" styleClass="responsiveModalPseudoClass" autoUpdate="true" >
 
             <c:if test="#{item.tipoDeAtracao.equals('Centro De Compras')}">
                 <b:panelGrid columns="2">
-                    <h:outputText class="title-pontoTuristico" value="#{pontosTuristicos.currentTouristSpot.nome}"/>
+                    <h:outputText class="title-pontoTuristico" value="#{pontosTuristicos.currentTouristSpot.nome}" />
                 </b:panelGrid>
                 <h:panelGroup styleClass="contents">
-                    <ui:repeat value="${pontosTuristicos.currentTouristSpot}" var="item">
-                        <h:outputText class="info" value="#{item.logradouro}"></h:outputText>
+                    <ui:repeat value="${pontosTuristicos.currentTouristSpot}" var="item" >
+                        <f:view contentType="text/html; charset=ISO-8859-1">
+                        <h:form  enctype="multipart/form-data" acceptcharset="utf-8">
+                        <h:outputText  class="info" value="#{item.logradouro}" ></h:outputText>
                         <b:container style="height: 20px"></b:container>
-                        <h:outputText class="info" value="#{item.bairro}"></h:outputText>
+                        <h:outputText class="info" value="Bairro: #{item.bairro}"></h:outputText>
                         <b:container style="height: 20px"></b:container>
                         <b:container>
                             <p>#{item.descricao}</p>
@@ -42,6 +43,8 @@
                             <h:outputText class="info" value=" FUNCIONAMENTO #{item.funcionamento}"></h:outputText>
                             <h:outputText class="info" value="FUNCIONAMENTO AOS DOMINGOS #{item.funcionamentoDomingo}"></h:outputText>
                         </b:container>
+                        </h:form>
+                        </f:view>
                     </ui:repeat> 
                 </h:panelGroup>
                 <f:facet name="footer">
@@ -56,7 +59,6 @@
                 <h:panelGroup  >
                     <ui:repeat value="${pontosTuristicos.currentTouristSpot}" var="item">
                         <h:outputText styleClass="info" value="#{item.endereco}"></h:outputText>
-                        <h:outputText styleClass="info" value="#{item.telefone}"></h:outputText>
                         <b:container>
                         </b:container>
                         <b:container style-class="BOX-HORARIOS">
@@ -221,7 +223,7 @@
         <h:form>
             <nav id="navBar" class="navbar navbar-expand-lg navbar-red bg-red">
                 <div id="divTitulo" class="container-fluid">
-                    <a id="titulo" class="navbar-brand" href="#">Pontos Turísticos</a>  
+                    <a id="titulo" class="navbar-brand" href="#">Pontos TurÃ­sticos</a>  
                 </div>
                 <div class="container-fluid">
                     <button
@@ -240,16 +242,21 @@
                         <!-- Left links -->
                         <ul  class="navbar-nav mb-2 mb-lg-0">
                             <li  class="nav-item">
-                                <b:button styleClass="button-home" value="Home" iconAwesome="home" look="Secondary" size="lg"/>
+                                <h:commandButton styleClass="button-home" value="Home"  style="height: 35px; width: 300px; font-size: 15px; margin-left: 20px; top:10px; background-color: gray; border-radius: 20px;"  />
                             </li>
                             <b:container></b:container>
                             <li class="nav-item">
-                                <b:button styleClass="button-home" value="Mostremos onde você está " iconAwesome="map" look="Secondary" size="lg"/>
+                                <h:commandButton styleClass="button-home" value="Mostremos onde vocÃª estÃ¡ "  style="height: 35px; width: 300px; font-size: 15px; margin-left: 20px; top:10px; background-color: gray; border-radius: 20px;"/>
                             </li>   
                             <b:container></b:container>
                             <li class="nav-item">
-                                <b:button styleClass="button-home" value="Visualize a sua lista de favoritos" iconAwesome="star" look="Secondary" size="lg"/>
-                            </li>   
+                                <h:commandButton styleClass="button-home" value="Visualize a sua lista de favoritos"  style="height: 35px; width: 300px; font-size: 15px; margin-left: 20px; top:10px; background-color: gray; border-radius: 20px;" />
+                            </li>
+                            <b:container></b:container>
+                            <li>
+                             <h:commandButton styleClass="button-home" value="Ordenar por localizaÃ§Ã£o" onclick="getLocation" action="#{acessoAPIGeocoding.atualizarAtracoesProximasPorLocalizacao}" style="height: 35px; width: 300px; font-size: 15px; margin-left: 20px; top:10px; background-color: gray; border-radius: 20px;"/>
+                            </li>
+                          
                         </ul>
                     </div>
                 </div>
@@ -266,7 +273,6 @@
             <h:inputHidden id="longitudeInput" value="#{acessoAPIGeocoding.lonGPS}" />
 
 
-            <h:commandButton value="Ordenar por localização" onclick="getLocation" action="#{acessoAPIGeocoding.atualizarAtracoesProximasPorLocalizacao}" />
         </h:form>
 
 
@@ -275,7 +281,7 @@
             if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(showPosition);
             } else {
-            alert("Geolocalização não é suportada neste navegador.");
+            alert("GeolocalizaÃ§Ã£o nÃ£o Ã© suportada neste navegador.");
             }
             }
 
@@ -313,63 +319,94 @@
                     <h:selectBooleanCheckbox value="${pontosTuristicos.isHotelFiltered}" onchange="updateModalView()">
                         <p:ajax update=":atracoes"/>                    
                     </h:selectBooleanCheckbox>
-                    <h:outputLabel for="isHotelFiltered">Hotéis</h:outputLabel>
+                    <h:outputLabel for="isHotelFiltered">HotÃ©is</h:outputLabel>
 
                     <h:selectBooleanCheckbox value="${pontosTuristicos.isMercadoPublicoFiltered}" onchange="updateModalView()">
-                        <p:ajax update=":atracoes"/>                    
+                        <p:ajax update=":atracoes1"/>                    
                     </h:selectBooleanCheckbox>
                     <h:outputLabel for="isMercadoPublicoFiltered">Mercados Publicos</h:outputLabel>
 
                     <h:selectBooleanCheckbox value="${pontosTuristicos.isMuseuFiltered}" onchange="updateModalView()">
-                        <p:ajax update=":atracoes"/>                    
+                        <p:ajax update=":atracoes1"/>                    
                     </h:selectBooleanCheckbox>
                     <h:outputLabel for="isMuseuFiltered">Museus</h:outputLabel>
 
                     <h:selectBooleanCheckbox value="${pontosTuristicos.isPonteFiltered}" onchange="updateModalView()">
-                        <p:ajax update=":atracoes"/>                    
+                        <p:ajax update=":atracoes1"/>                    
                     </h:selectBooleanCheckbox>
                     <h:outputLabel for="isPonteFiltered">Pontes</h:outputLabel>
 
                     <h:selectBooleanCheckbox value="${pontosTuristicos.isTeatroFiltered}" onchange="updateModalView()">
-                        <p:ajax update=":atracoes"/>                    
+                        <p:ajax update=":atracoes1"/>                    
                     </h:selectBooleanCheckbox>
                     <h:outputLabel for="isTeatroFiltered">Teatros</h:outputLabel>
                 </h:panelGroup>
             </h:form>
 
         </b:container>
-
-
-
-
-        <h:panelGroup id="atracoes">
+        
+        <b:container fluid="true" >
+        <b:row>
+            <b:column medium-screen="2" style="margin-left:  150px;">
+        <h:panelGroup id="atracoes" >
             <ui:repeat value="${pontosTuristicos.allPontosTuristicos}" var="item">
-                <b:container></b:container>
-                <f:view contentType="text/html; charset=UTF-8">
                     <b:panel iconAwesome="map" style-class="card" title="#{item.nome}" collapsible="false"
                              rendered="#{item.tipoDeAtracao.equals('Bar E Restaurante') ? pontosTuristicos.isBarERestauranteFiltered :
                                          item.tipoDeAtracao.equals('Centro De Compras') ? pontosTuristicos.isCentroDeComprasFiltered :
                                          item.tipoDeAtracao.equals('Feira Livre') ? pontosTuristicos.isFeiraLiveFiltered :
                                          item.tipoDeAtracao.equals('Hotel') ? pontosTuristicos.isHotelFiltered :
-                                         item.tipoDeAtracao.equals('Mercado Publico') ? pontosTuristicos.isMercadoPublicoFiltered :
+                                         false}">
+                        Â Â <b:iconAwesome value="star" solid="true" style="color: yellow; font-size: 20px;"/><b:button value="Favoritar Ponto Turistico"  style="color: black; font-size: 13px;  font-family: fantasy" />
+                        
+                        <h:form acceptcharset="ISO-8859-1">
+                            <h:outputText class="info" value="#{item.tipoDeAtracao}" /><br></br>
+                            <c:if test="#{pontosTuristicos.isOrdenacaoActive}">
+                                <h:outputText class="info" value="DistÃ¢ncia para o local: #{item.currentDistanciaParaLoc} m" />
+                            </c:if>
+                            <p:commandButton styleClass="buttonCard"  value="Visualizar" actionListener="#{pontosTuristicos.updateSelectedTouristSpot(item.id, item.tipoDeAtracao)}"
+                                             oncomplete="$('#modalView').modal('show')" update=":modalView" ajax="true"/>
+                        </h:form>
+             
+                    </b:panel>
+            </ui:repeat>
+             
+        </h:panelGroup>
+        </b:column>
+            <b:column medium-screen="6" >
+                   <h:form styleClass="mapa" style="" acceptcharset="ISO-8859-1">
+            <b:container styleClass="mapa"></b:container>
+            </h:form>     
+            </b:column>
+                 <b:column col-md="2" style="margin-left:  150px;" >
+                <h:panelGroup id="atracoes1">
+                <ui:repeat value="${pontosTuristicos.allPontosTuristicos}" var="item">
+                    <b:panel iconAwesome="map" style-class="card" title="#{item.nome}" collapsible="false" 
+                             rendered="#{
+                             item.tipoDeAtracao.equals('Mercado Publico') ? pontosTuristicos.isMercadoPublicoFiltered : 
                                          item.tipoDeAtracao.equals('Museu') ? pontosTuristicos.isMuseuFiltered :
                                          item.tipoDeAtracao.equals('Ponte') ? pontosTuristicos.isPonteFiltered :
                                          item.tipoDeAtracao.equals('Teatro') ? pontosTuristicos.isTeatroFiltered : false}">
                         <h:form>
+                            Â Â <b:iconAwesome value="star" solid="true" style="color: yellow; font-size: 20px;"/><b:button value="Favoritar Ponto Turistico"  style="color: black; font-size: 13px;  font-family: fantasy" />
+                            <b:container></b:container>
                             <h:outputText class="info" value="#{item.tipoDeAtracao}" /><br></br>
                             <c:if test="#{pontosTuristicos.isOrdenacaoActive}">
-                                <h:outputText class="info" value="Distância para o local: #{item.currentDistanciaParaLoc} m" />
+                                <h:outputText class="info" value="DistÃ¢ncia para o local: #{item.currentDistanciaParaLoc} m" />
                             </c:if>
-                            <p:commandButton value="Visualizar" actionListener="#{pontosTuristicos.updateSelectedTouristSpot(item.id, item.tipoDeAtracao)}"
+                            <p:commandButton styleClass="buttonCard"  value="Visualizar" actionListener="#{pontosTuristicos.updateSelectedTouristSpot(item.id, item.tipoDeAtracao)}"
                                              oncomplete="$('#modalView').modal('show')" update=":modalView" ajax="true" />
                         </h:form>
-
+             
                     </b:panel>
-                </f:view>
-                <b:container></b:container>
             </ui:repeat>
-        </h:panelGroup>
-
+                </h:panelGroup>
+            </b:column>
+      </b:row>
+          
+   
+        
+</b:container>
+             
     </h:body>
 
 </html>
