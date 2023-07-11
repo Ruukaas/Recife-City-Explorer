@@ -26,24 +26,24 @@
                 <h:panelGroup styleClass="contents">
                     <ui:repeat value="${pontosTuristicos.currentTouristSpot}" var="item" >
                         <f:view contentType="text/html; charset=ISO-8859-1">
-                        <h:form  enctype="multipart/form-data" acceptcharset="utf-8">
-                        <h:outputText  class="info" value="#{item.logradouro}" ></h:outputText>
-                        <b:container style="height: 20px"></b:container>
-                        <h:outputText class="info" value="Bairro: #{item.bairro}"></h:outputText>
-                        <b:container style="height: 20px"></b:container>
-                        <b:container>
-                            <p>#{item.descricao}</p>
-                        </b:container>
-                        <b:container style="height: 20px"></b:container>
-                        <h:outputText class="info" value="TELEFONE: #{item.telefone}"></h:outputText>
-                        <b:container style="height: 20px"></b:container>
-                        <h:outputText class="info" value="#{item.site}"></h:outputText>
-                        <b:container style="height: 20px"></b:container>
-                        <b:container style-class="BOX-HORARIOS">
-                            <h:outputText class="info" value=" FUNCIONAMENTO #{item.funcionamento}"></h:outputText>
-                            <h:outputText class="info" value="FUNCIONAMENTO AOS DOMINGOS #{item.funcionamentoDomingo}"></h:outputText>
-                        </b:container>
-                        </h:form>
+                            <h:form  enctype="multipart/form-data" acceptcharset="utf-8">
+                                <h:outputText  class="info" value="#{item.logradouro}" ></h:outputText>
+                                <b:container style="height: 20px"></b:container>
+                                <h:outputText class="info" value="Bairro: #{item.bairro}"></h:outputText>
+                                <b:container style="height: 20px"></b:container>
+                                <b:container>
+                                    <p>#{item.descricao}</p>
+                                </b:container>
+                                <b:container style="height: 20px"></b:container>
+                                <h:outputText class="info" value="TELEFONE: #{item.telefone}"></h:outputText>
+                                <b:container style="height: 20px"></b:container>
+                                <h:outputText class="info" value="#{item.site}"></h:outputText>
+                                <b:container style="height: 20px"></b:container>
+                                <b:container style-class="BOX-HORARIOS">
+                                    <h:outputText class="info" value=" FUNCIONAMENTO #{item.funcionamento}"></h:outputText>
+                                    <h:outputText class="info" value="FUNCIONAMENTO AOS DOMINGOS #{item.funcionamentoDomingo}"></h:outputText>
+                                </b:container>
+                            </h:form>
                         </f:view>
                     </ui:repeat> 
                 </h:panelGroup>
@@ -116,14 +116,11 @@
                         <b:container>
                             <p>#{item.descricao}"</p>
                         </b:container>
-                        <b:container style-class="BOX-HORARIOS">
-                            <h:outputText class="info" value="TELEFONE: #{item.telefone}"></h:outputText>
-                            <h:outputText class="info" value="#{item.site}"></h:outputText>
-                            <h:outputText class="info" value="#{item.email}"></h:outputText>
-
-                            <b:container></b:container>
-
-                        </b:container>
+                        <!--                        <b:container style-class="BOX-HORARIOS">
+                                                    
+                                                    <b:container></b:container>
+                        
+                                                </b:container>-->
                         <b:container></b:container>
                     </ui:repeat> 
                 </h:panelGroup>
@@ -145,11 +142,8 @@
                             <p>#{item.descricao}"</p>
                         </b:container>
                         <b:container style-class="BOX-HORARIOS">
-                            <h:outputText class="info" value="TELEFONE: #{item.telefone}"></h:outputText>
-                            <h:outputText class="info" value="#{item.email}"></h:outputText>
-
-                            <b:container></b:container>
-
+                            <h:outputText class="info" value=" TELEFONE #{item.telefone}"></h:outputText>
+                            <h:outputText class="info" value="SITE  #{item.site}"></h:outputText>
                         </b:container>
                         <b:container></b:container>
                     </ui:repeat> 
@@ -166,18 +160,8 @@
                 <h:panelGroup id="centrosDeCompras" >
                     <ui:repeat value="${pontosTuristicos.currentTouristSpot}" var="item">
                         <h:outputText class="info" value="#{item.bairro}"></h:outputText>
-                        <h:outputText class="info" value="#{item.logradouro}"></h:outputText>
-
                         <b:container>
                             <p>#{item.descricao}"</p>
-                        </b:container>
-                        <b:container style-class="BOX-HORARIOS">
-                            <h:outputText class="info" value="TELEFONE: #{item.telefone}"></h:outputText>
-                            <h:outputText class="info" value="#{item.site}"></h:outputText>
-                            <h:outputText class="info" value="#{item.email}"></h:outputText>
-
-                            <b:container></b:container>
-
                         </b:container>
                         <b:container></b:container>
                     </ui:repeat> 
@@ -202,9 +186,7 @@
                         </b:container>
                         <b:container style-class="BOX-HORARIOS">
                             <h:outputText class="info" value="TELEFONE: #{item.telefone}"></h:outputText>
-                            <h:outputText class="info" value="#{item.site}"></h:outputText>
-                            <h:outputText class="info" value="#{item.email}"></h:outputText>
-
+                            <h:outputText class="info" value="#{item.logradouro}"></h:outputText>
                             <b:container></b:container>
 
                         </b:container>
@@ -254,9 +236,9 @@
                             </li>
                             <b:container></b:container>
                             <li>
-                             <h:commandButton styleClass="button-home" value="Ordenar por localizaÃ§Ã£o" onclick="getLocation" action="#{acessoAPIGeocoding.atualizarAtracoesProximasPorLocalizacao}" style="height: 35px; width: 300px; font-size: 15px; margin-left: 20px; top:10px; background-color: gray; border-radius: 20px;"/>
+                                <h:commandButton styleClass="button-home" value="Ordenar por localizaÃ§Ã£o" onclick="getLocation" action="#{acessoAPIGeocoding.atualizarAtracoesProximasPorLocalizacao}" style="height: 35px; width: 300px; font-size: 15px; margin-left: 20px; top:10px; background-color: gray; border-radius: 20px;"/>
                             </li>
-                          
+
                         </ul>
                     </div>
                 </div>
@@ -344,69 +326,69 @@
             </h:form>
 
         </b:container>
-        
+
         <b:container fluid="true" >
-        <b:row>
-            <b:column medium-screen="2" style="margin-left:  150px;">
-        <h:panelGroup id="atracoes" >
-            <ui:repeat value="${pontosTuristicos.allPontosTuristicos}" var="item">
-                    <b:panel iconAwesome="map" style-class="card" title="#{item.nome}" collapsible="false"
-                             rendered="#{item.tipoDeAtracao.equals('Bar E Restaurante') ? pontosTuristicos.isBarERestauranteFiltered :
-                                         item.tipoDeAtracao.equals('Centro De Compras') ? pontosTuristicos.isCentroDeComprasFiltered :
-                                         item.tipoDeAtracao.equals('Feira Livre') ? pontosTuristicos.isFeiraLiveFiltered :
-                                         item.tipoDeAtracao.equals('Hotel') ? pontosTuristicos.isHotelFiltered :
-                                         false}">
-                        Â Â <b:iconAwesome value="star" solid="true" style="color: yellow; font-size: 20px;"/><b:button value="Favoritar Ponto Turistico"  style="color: black; font-size: 13px;  font-family: fantasy" />
-                        
-                        <h:form acceptcharset="ISO-8859-1">
-                            <h:outputText class="info" value="#{item.tipoDeAtracao}" /><br></br>
-                            <c:if test="#{pontosTuristicos.isOrdenacaoActive}">
-                                <h:outputText class="info" value="DistÃ¢ncia para o local: #{item.currentDistanciaParaLoc} m" />
-                            </c:if>
-                            <p:commandButton styleClass="buttonCard"  value="Visualizar" actionListener="#{pontosTuristicos.updateSelectedTouristSpot(item.id, item.tipoDeAtracao)}"
-                                             oncomplete="$('#modalView').modal('show')" update=":modalView" ajax="true"/>
-                        </h:form>
-             
-                    </b:panel>
-            </ui:repeat>
-             
-        </h:panelGroup>
-        </b:column>
-            <b:column medium-screen="6" >
-                   <h:form styleClass="mapa" style="" acceptcharset="ISO-8859-1">
-            <b:container styleClass="mapa"></b:container>
-            </h:form>     
-            </b:column>
-                 <b:column col-md="2" style="margin-left:  150px;" >
-                <h:panelGroup id="atracoes1">
-                <ui:repeat value="${pontosTuristicos.allPontosTuristicos}" var="item">
-                    <b:panel iconAwesome="map" style-class="card" title="#{item.nome}" collapsible="false" 
-                             rendered="#{
-                             item.tipoDeAtracao.equals('Mercado Publico') ? pontosTuristicos.isMercadoPublicoFiltered : 
+            <b:row>
+                <b:column medium-screen="2" style="margin-left:  150px;">
+                    <h:panelGroup id="atracoes" >
+                        <ui:repeat value="${pontosTuristicos.allPontosTuristicos}" var="item">
+                            <b:panel iconAwesome="map" style-class="card" title="#{item.nome}" collapsible="false"
+                                     rendered="#{item.tipoDeAtracao.equals('Bar E Restaurante') ? pontosTuristicos.isBarERestauranteFiltered :
+                                                 item.tipoDeAtracao.equals('Centro De Compras') ? pontosTuristicos.isCentroDeComprasFiltered :
+                                                 item.tipoDeAtracao.equals('Feira Livre') ? pontosTuristicos.isFeiraLiveFiltered :
+                                                 item.tipoDeAtracao.equals('Hotel') ? pontosTuristicos.isHotelFiltered :
+                                                 false}">
+                                Â Â <b:iconAwesome value="star" solid="true" style="color: yellow; font-size: 20px;"/><b:button value="Favoritar Ponto Turistico"  style="color: black; font-size: 13px;  font-family: fantasy" />
+
+                                <h:form acceptcharset="ISO-8859-1">
+                                    <h:outputText class="info" value="#{item.tipoDeAtracao}" /><br></br>
+                                    <c:if test="#{pontosTuristicos.isOrdenacaoActive}">
+                                        <h:outputText class="info" value="DistÃ¢ncia para o local: #{item.currentDistanciaParaLoc} m" />
+                                    </c:if>
+                                    <p:commandButton styleClass="buttonCard"  value="Visualizar" actionListener="#{pontosTuristicos.updateSelectedTouristSpot(item.id, item.tipoDeAtracao)}"
+                                                     oncomplete="$('#modalView').modal('show')" update=":modalView" ajax="true"/>
+                                </h:form>
+
+                            </b:panel>
+                        </ui:repeat>
+
+                    </h:panelGroup>
+                </b:column>
+                <b:column medium-screen="6" >
+                    <h:form styleClass="mapa" style="" acceptcharset="ISO-8859-1">
+                        <b:container styleClass="mapa"></b:container>
+                    </h:form>     
+                </b:column>
+                <b:column col-md="2" style="margin-left:  150px;" >
+                    <h:panelGroup id="atracoes1">
+                        <ui:repeat value="${pontosTuristicos.allPontosTuristicos}" var="item">
+                            <b:panel iconAwesome="map" style-class="card" title="#{item.nome}" collapsible="false" 
+                                     rendered="#{
+                                     item.tipoDeAtracao.equals('Mercado Publico') ? pontosTuristicos.isMercadoPublicoFiltered : 
                                          item.tipoDeAtracao.equals('Museu') ? pontosTuristicos.isMuseuFiltered :
                                          item.tipoDeAtracao.equals('Ponte') ? pontosTuristicos.isPonteFiltered :
                                          item.tipoDeAtracao.equals('Teatro') ? pontosTuristicos.isTeatroFiltered : false}">
-                        <h:form>
-                            Â Â <b:iconAwesome value="star" solid="true" style="color: yellow; font-size: 20px;"/><b:button value="Favoritar Ponto Turistico"  style="color: black; font-size: 13px;  font-family: fantasy" />
-                            <b:container></b:container>
-                            <h:outputText class="info" value="#{item.tipoDeAtracao}" /><br></br>
-                            <c:if test="#{pontosTuristicos.isOrdenacaoActive}">
-                                <h:outputText class="info" value="DistÃ¢ncia para o local: #{item.currentDistanciaParaLoc} m" />
-                            </c:if>
-                            <p:commandButton styleClass="buttonCard"  value="Visualizar" actionListener="#{pontosTuristicos.updateSelectedTouristSpot(item.id, item.tipoDeAtracao)}"
-                                             oncomplete="$('#modalView').modal('show')" update=":modalView" ajax="true" />
-                        </h:form>
-             
-                    </b:panel>
-            </ui:repeat>
-                </h:panelGroup>
-            </b:column>
-      </b:row>
-          
-   
-        
-</b:container>
-             
+                                <h:form>
+                                    Â Â <b:iconAwesome value="star" solid="true" style="color: yellow; font-size: 20px;"/><b:button value="Favoritar Ponto Turistico"  style="color: black; font-size: 13px;  font-family: fantasy" />
+                                    <b:container></b:container>
+                                    <h:outputText class="info" value="#{item.tipoDeAtracao}" /><br></br>
+                                    <c:if test="#{pontosTuristicos.isOrdenacaoActive}">
+                                        <h:outputText class="info" value="DistÃ¢ncia para o local: #{item.currentDistanciaParaLoc} m" />
+                                    </c:if>
+                                    <p:commandButton styleClass="buttonCard"  value="Visualizar" actionListener="#{pontosTuristicos.updateSelectedTouristSpot(item.id, item.tipoDeAtracao)}"
+                                                     oncomplete="$('#modalView').modal('show')" update=":modalView" ajax="true" />
+                                </h:form>
+
+                            </b:panel>
+                        </ui:repeat>
+                    </h:panelGroup>
+                </b:column>
+            </b:row>
+
+
+
+        </b:container>
+
     </h:body>
 
 </html>
