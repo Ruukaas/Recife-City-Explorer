@@ -89,7 +89,7 @@ public class BarERestaurante extends touristSpot {
     @Override
     public String toString() {
         return "BaresERestaurantes{"
-                + "_id=" + _id
+                + "_id=" + id
                 + ", nome='" + nome + '\''
                 + ", endereco='" + endereco + '\''
                 + ", telefone='" + telefone + '\''
@@ -99,4 +99,6 @@ public class BarERestaurante extends touristSpot {
                
                 + '}';
     }
+    
+    
 }

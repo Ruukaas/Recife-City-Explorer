@@ -182,6 +182,34 @@
     .font-card-endreco{
         font-size: 18px;
     }
+    
+    .column1{
+        margin-left: 20px;
+    }
+    
+    .card{
+        width: 220px;
+        height: 180px;
+        margin-left: 5px;
+        margin-top: 50px;
+        
+    }
+    mapa{
+        margin-left: 50px;
+        width: 200px;
+    }
+    #titulo{
+    font-size: 35px;
+    }
+    #button-home{
+        margin-right: 5px;
+        margin-left: 5px;
+        width: 10px;
+        height: 50px;
+    }
+    #navBar{
+        height: 100px;
+    }
 
 
 }

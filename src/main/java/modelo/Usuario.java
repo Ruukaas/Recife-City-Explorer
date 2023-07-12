@@ -1,6 +1,8 @@
 package modelo;
 
-
+import jakarta.persistence.Basic;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -9,16 +11,19 @@ import jakarta.persistence.Table;
 import java.io.Serializable;
 import java.util.List;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.OneToMany;
+import java.util.Objects;
 
 @Entity
 public class Usuario implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
     private String nome;
-
+    @Column(unique=true)
     private String email;
 
     private String senha;
@@ -31,10 +36,9 @@ public class Usuario implements Serializable {
 
     public Usuario() {
     }
-    
-    
 
-    @ManyToMany
+    @Basic(fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.MERGE)
     private List<concreteTouristSpot> favoritos;
 
     public String getNome() {
@@ -66,31 +70,34 @@ public class Usuario implements Serializable {
     }
 
     public void setFavoritos(List<concreteTouristSpot> favoritos) {
-        this.favoritos = favoritos;
+        this.favoritos.clear(); // Limpa a lista existente antes de adicionar novos favoritos
+        this.favoritos.addAll(favoritos);
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (this.getId() != 0 ? Integer.valueOf(this.id).hashCode() : 0);
-        return hash;
+        return Objects.hashCode(id);
     }
 
     @Override
     public boolean equals(Object object) {
-        if (!(object instanceof Usuario)) {
+        if (this == object) {
+            return true;
+        }
+
+        if (object == null || getClass() != object.getClass()) {
             return false;
         }
+
         Usuario other = (Usuario) object;
-        return !((this.getId() == 0 && other.getId() != 0)
-                || (this.getId() != 0 && !Integer.valueOf(this.id).equals(other.getId())));
+        return id == other.id && Objects.equals(email, other.email);
     }
 }

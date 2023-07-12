@@ -165,7 +165,7 @@ public class CentroDeCompras extends touristSpot{
     @Override
     public String toString() {
         return "CentroDeCompras{"
-                + "_id=" + _id
+                + "_id=" + id
                 + ", nome='" + nome + '\''
                 + ", descricao='" + descricao + '\''
                 + ", bairro='" + bairro + '\''

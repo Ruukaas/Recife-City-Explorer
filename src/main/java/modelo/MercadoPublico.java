@@ -43,7 +43,7 @@ public class MercadoPublico extends touristSpot{
     @Override
     public String toString() {
         return "MercadoPublico{" +
-                "_id=" + _id +
+                "_id=" + id +
                 ", nome='" + nome + '\'' +
                 ", descricao='" + descricao + '\'' +
                 ", bairro='" + bairro + '\'' +

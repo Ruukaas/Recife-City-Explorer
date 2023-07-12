@@ -41,7 +41,7 @@ public class Ponte extends touristSpot{
     @Override
     public String toString() {
         return "Ponte{" +
-                "_id=" + _id +
+                "_id=" + id +
                 ", nome='" + nome + '\'' +
                 ", descricao='" + descricao + '\'' +
                 ", bairro='" + bairro + '\'' +

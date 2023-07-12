@@ -1,5 +1,8 @@
 package api;
 
+import com.sun.faces.util.CollectionsUtils;
+
+import db.ManagerDao;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -24,7 +27,10 @@ import modelo.MercadoPublico;
 import modelo.Museu;
 import modelo.Ponte;
 import modelo.Teatro;
+import modelo.Usuario;
+import modelo.concreteTouristSpot;
 import modelo.touristSpot;
+import org.modelmapper.ModelMapper;
 import org.primefaces.json.JSONArray;
 import org.primefaces.json.JSONException;
 import org.primefaces.json.JSONObject;
@@ -41,7 +47,6 @@ import org.primefaces.json.JSONObject;
 @ViewScoped
 public class acessoPontosTuristicos implements Serializable {
 
-
     //Variáveis usadas para dar informações ao modal
     int currentID;
     touristSpot currentTouristSpot;
@@ -52,7 +57,6 @@ public class acessoPontosTuristicos implements Serializable {
     HttpURLConnection conn;
     int responseCode;
 
-   
     BufferedReader reader;
     StringBuilder response;
 
@@ -76,16 +80,24 @@ public class acessoPontosTuristicos implements Serializable {
     List<Hotel> hoteis;
     List<BarERestaurante> baresERestaurantes;
     List<touristSpot> allPontosTuristicos;
-    
+
     //Variável de controle da ordenação
     boolean isOrdenacaoActive;
 
 //    @ManagedProperty("#{acessoAPIGeocoding}")
 //    acessoAPIGeocoding geocod;
-    
-    
+    //Informações do usuario logado
+    long currentIDUsuario;
+
+    //Informações da exibição de favoritos
+    boolean isListaFavoritosOn;
+    List<touristSpot> favoritos;
+
     @PostConstruct
     public void init() {
+
+        //Remover essa linha de currentIDUsuario, apenas enquanto não tem o login
+        currentIDUsuario = 1;
 
         isBarERestauranteFiltered = true;
         isCentroDeComprasFiltered = true;
@@ -95,8 +107,10 @@ public class acessoPontosTuristicos implements Serializable {
         isMuseuFiltered = true;
         isPonteFiltered = true;
         isTeatroFiltered = true;
-        
+
         isOrdenacaoActive = false;
+
+        isListaFavoritosOn = false;
 
         this.currentTouristSpot = null;
 
@@ -126,6 +140,15 @@ public class acessoPontosTuristicos implements Serializable {
 
         allPontosTuristicos = new ArrayList<>();
         updateAllPontosTuristicos();
+
+        favoritos = new ArrayList<>();
+        //remover tb
+//        addFavorito(1, "Museu");;
+//        addFavorito(2, "Museu");
+//        addFavorito(4, "Museu");
+//        //
+//
+//        updateFavoritos();
 
         FacesContext facesContext = FacesContext.getCurrentInstance();
         UIViewRoot viewRoot = facesContext.getViewRoot();
@@ -516,13 +539,11 @@ public class acessoPontosTuristicos implements Serializable {
                     String especialidade = currentBarERestaurante.getString("especialidade");
                     String site = currentBarERestaurante.getString("site");
                     String email = currentBarERestaurante.getString("email");
-                    
+
                     BarERestaurante barERestaurante = new BarERestaurante(_id, nome, endereco, telefone, especialidade, site, email);
-                    
-                    
+
 //                    Double[] currentLatLong = getLatELongBaseadoNoEndereco(endereco);
 //                    BarERestaurante barERestaurante = new BarERestaurante(_id, nome, endereco, telefone, especialidade, site, email, currentLatLong[0], currentLatLong[1]);
-
 // Adicionar o objeto à lista
                     baresERestaurantes.add(barERestaurante);
                 } catch (JSONException ex) {
@@ -584,6 +605,132 @@ public class acessoPontosTuristicos implements Serializable {
 
     }
 
+    //Gerenciamento de favoritos
+    public void updateFavoritos() {
+        Usuario currentUsuario = ManagerDao.getCurrentInstance().readUsuario(currentIDUsuario);
+        
+        
+
+        if (!(currentUsuario == null) || !(currentUsuario.getFavoritos() == null)) {
+            for (concreteTouristSpot cts : currentUsuario.getFavoritos()) {
+                System.out.println("update" + cts.getNome());
+                ModelMapper modelMapper = new ModelMapper();
+                touristSpot currentTS = modelMapper.map(cts, touristSpot.class);
+                favoritos.add(currentTS);
+            }
+            
+            for (touristSpot tsFav : favoritos) {
+            for (touristSpot tsLista : allPontosTuristicos) {
+                if (tsFav.equals(tsLista)) {
+                    System.out.println(tsFav.getNome());
+                    tsLista.setIsFavorite(true);
+                    break;
+                }
+            }
+        }
+        }
+    }
+
+    public void addFavorito(int id, String tipoTouristSpot) {
+
+        touristSpot favTouristSpot = null;
+
+        switch (tipoTouristSpot) {
+            case "Bar E Restaurante":
+                favTouristSpot = baresERestaurantes.get(id - 1);
+
+                break;
+            case "Centro De Compras":
+                favTouristSpot = centrosDeCompras.get(id - 1);
+
+                break;
+            case "Feira Livre":
+                favTouristSpot = feirasLivres.get(id - 1);
+
+                break;
+            case "Hotel":
+                favTouristSpot = hoteis.get(id - 1);
+
+                break;
+            case "Mercado Publico":
+                favTouristSpot = mercadosPublicos.get(id - 1);
+
+                break;
+            case "Museu":
+                favTouristSpot = museus.get(id - 1);
+
+                break;
+            case "Ponte":
+                favTouristSpot = pontes.get(id - 1);
+
+                break;
+            case "Teatro":
+                favTouristSpot = teatros.get(id - 1);
+
+                break;
+        }
+        
+        
+
+        if (favTouristSpot != null) {   
+            ModelMapper modelMapper = new ModelMapper();
+            Usuario currentUsuario = ManagerDao.getCurrentInstance().readUsuario(currentIDUsuario);
+            concreteTouristSpot currentCTS = modelMapper.map(favTouristSpot, concreteTouristSpot.class);
+            System.out.println("Add:" + currentCTS.getNome());
+            currentUsuario.getFavoritos().add(currentCTS);
+            ManagerDao.getCurrentInstance().update(currentUsuario);
+        }
+
+    }
+
+    public void removeFavorito(int id, String tipoTouristSpot) {
+        touristSpot favTouristSpot = null;
+
+        switch (tipoTouristSpot) {
+            case "Bar E Restaurante":
+                favTouristSpot = baresERestaurantes.get(id - 1);
+
+                break;
+            case "Centro De Compras":
+                favTouristSpot = centrosDeCompras.get(id - 1);
+
+                break;
+            case "Feira Livre":
+                favTouristSpot = feirasLivres.get(id - 1);
+
+                break;
+            case "Hotel":
+                favTouristSpot = hoteis.get(id - 1);
+
+                break;
+            case "Mercado Publico":
+                favTouristSpot = mercadosPublicos.get(id - 1);
+
+                break;
+            case "Museu":
+                favTouristSpot = museus.get(id - 1);
+
+                break;
+            case "Ponte":
+                favTouristSpot = pontes.get(id - 1);
+
+                break;
+            case "Teatro":
+                favTouristSpot = teatros.get(id - 1);
+
+                break;
+        }
+
+        if (favTouristSpot != null) {
+            ModelMapper modelMapper = new ModelMapper();
+            Usuario currentUsuario = ManagerDao.getCurrentInstance().readUsuario(currentIDUsuario);
+            concreteTouristSpot currentCTS = modelMapper.map(favTouristSpot, concreteTouristSpot.class);
+            currentUsuario.getFavoritos().remove(currentCTS);
+            ManagerDao.getCurrentInstance().update(currentUsuario);
+        }
+    }
+
+//
     public boolean isInstanceOf(Object objeto, Class<?> classe) {
         return classe.isInstance(objeto);
     }
@@ -804,7 +951,6 @@ public class acessoPontosTuristicos implements Serializable {
     public void setCurrentTouristSpot(touristSpot currentTouristSpot) {
         this.currentTouristSpot = currentTouristSpot;
     }
-    
 
 //    public acessoAPIGeocoding getGeocod() {
 //        return geocod;
@@ -813,12 +959,11 @@ public class acessoPontosTuristicos implements Serializable {
 //    public void setGeocod(acessoAPIGeocoding geocod) {
 //        this.geocod = geocod;
 //    }
-
     public void setCurrentAPIURL(String httpdadosrecifepegovbrapi3actiondatastore) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
-     public int getResponseCode() {
+
+    public int getResponseCode() {
         return responseCode;
     }
 

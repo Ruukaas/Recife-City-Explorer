@@ -56,7 +56,7 @@ public class Hotel extends touristSpot{
     @Override
     public String toString() {
         return "Hoteis{" +
-                "_id=" + _id +
+                "_id=" + id +
                 ", nome='" + nome + '\'' +
                 ", endereco='" + endereco + '\'' +
                 ", telefone='" + telefone + '\'' +

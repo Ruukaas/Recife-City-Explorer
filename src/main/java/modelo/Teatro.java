@@ -63,7 +63,7 @@ public class Teatro extends touristSpot{
     @Override
     public String toString() {
         return "Teatro{" +
-                "_id=" + _id +
+                "_id=" + id +
                 ", nome='" + nome + '\'' +
                 ", descricao='" + descricao + '\'' +
                 ", bairro='" + bairro + '\'' +

@@ -8,10 +8,8 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import jakarta.persistence.Query;
-import java.util.List;
 
 import modelo.Usuario;
-import modelo.concreteTouristSpot;
 
 /**
  *
@@ -49,16 +47,15 @@ public class ManagerDao {
         em.getTransaction().begin();
 
         em.merge(o);
+        em.flush();
         em.getTransaction().commit();
         em.close();
     }
 
-    public Usuario readUsuario(int id) {
+    public Usuario readUsuario(long id) {
         EntityManager em = emf.createEntityManager();
-
-        Query query = em.createQuery("SELECT c FROM Usuario c WHERE c.id = :id");
-        query.setParameter("id", id);
-        Usuario retorno = (Usuario) query.getSingleResult();
+       
+        Usuario retorno = em.find(Usuario.class, id);
 
         em.close();
 

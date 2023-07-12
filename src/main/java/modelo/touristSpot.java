@@ -5,18 +5,20 @@
  */
 package modelo;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.IdClass;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Transient;
 import java.io.Serializable;
 import java.util.List;
-
+import java.util.Objects;
 
 /**
  *
@@ -25,31 +27,39 @@ import java.util.List;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "spot_type")
+@IdClass(TouristSpotPK.class)
 public abstract class touristSpot implements Serializable {
 
     //TO DO - Quando o método de converter endereço em lat/long estiver pronto, colocar o lat e long aqui
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected int codigo;
-    
-    protected int _id;
+    protected int id;
+
+    @Id
+    @Column(name = "tipo_de_atracao")
+    protected String tipoDeAtracao;
+
     @Transient
     protected String nome;
-    protected String tipoDeAtracao;
     @Transient
     protected double latitude;
     @Transient
     protected double longitude;
-    @Transient
-    protected double currentDistanciaParaLoc;
+
     @ManyToMany(mappedBy = "favoritos")
     private List<Usuario> usuarios;
+
+    //Comparar distância
+    @Transient
+    protected double currentDistanciaParaLoc;
+
+    @Transient
+    protected boolean isFavorite;
 
     public touristSpot() {
     }
 
-    public touristSpot(int _id, String nome, double latitude, double longitude) {
-        this._id = _id;
+    public touristSpot(int id, String nome, double latitude, double longitude) {
+        this.id = id;
         this.nome = nome;
         this.latitude = latitude;
         this.longitude = longitude;
@@ -57,19 +67,19 @@ public abstract class touristSpot implements Serializable {
         this.currentDistanciaParaLoc = 0.0;
     }
 
-    public touristSpot(int _id, String nome) {
-        this._id = _id;
+    public touristSpot(int id, String nome) {
+        this.id = id;
         this.nome = nome;
         this.currentDistanciaParaLoc = 0.0;
         this.setTipoDeAtracao("");
     }
 
     public int getId() {
-        return _id;
+        return id;
     }
 
-    public void setId(int _id) {
-        this._id = _id;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNome() {
@@ -133,21 +143,31 @@ public abstract class touristSpot implements Serializable {
         this.usuarios = usuarios;
     }
 
-@Override
-public int hashCode() {
-    int hash = 0;
-    hash += (codigo != 0 ? Integer.valueOf(codigo).hashCode() : 0);
-    return hash;
-}
-
-@Override
-public boolean equals(Object object) {
-    if (!(object instanceof touristSpot)) {
-        return false;
+    public boolean isIsFavorite() {
+        return isFavorite;
     }
-    touristSpot other = (touristSpot) object;
-    return !((codigo == 0 && other.codigo != 0)
-            || (codigo != 0 && !Integer.valueOf(codigo).equals(other.codigo)));
-}
+
+    public void setIsFavorite(boolean isFavorite) {
+        this.isFavorite = isFavorite;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + (tipoDeAtracao != null ? tipoDeAtracao.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (object == null || getClass() != object.getClass()) {
+            return false;
+        }
+        touristSpot other = (touristSpot) object;
+        return id == other.id && Objects.equals(tipoDeAtracao, other.tipoDeAtracao);
+    }
 
 }

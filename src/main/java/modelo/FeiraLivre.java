@@ -63,7 +63,7 @@ public class FeiraLivre extends touristSpot {
     @Override
     public String toString() {
         return "FeiraLivre{" +
-                "_id=" + this._id +
+                "_id=" + this.id +
                 ", nome='" + nome + '\'' +
                 ", localizacao='" + localizacao + '\'' +
                 ", dias='" + dias + '\'' +

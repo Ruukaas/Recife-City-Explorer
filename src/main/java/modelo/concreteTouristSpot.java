@@ -11,21 +11,18 @@ import java.io.Serializable;
  *
  * @author euluc
  */
-
 @Entity
-public class concreteTouristSpot extends touristSpot implements Serializable{
+public class concreteTouristSpot extends touristSpot implements Serializable {
 
     public concreteTouristSpot() {
     }
 
-    public concreteTouristSpot(int _id, String nome, double latitude, double longitude) {
-        super(_id, nome, latitude, longitude);
+    public concreteTouristSpot(int id, String nome, double latitude, double longitude) {
+        super(id, nome, latitude, longitude);
     }
 
-    public concreteTouristSpot(int _id, String nome) {
-        super(_id, nome);
+    public concreteTouristSpot(int id, String nome) {
+        super(id, nome);
     }
-    
-    
-    
+
 }
